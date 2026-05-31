@@ -1,0 +1,15 @@
+# Compilation Java
+out/
+*.class
+sources.txt
+
+# Connecteur JDBC (à télécharger localement, voir lib/README.md)
+lib/*.jar
+
+# Fichiers système / éditeurs
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+*.swp

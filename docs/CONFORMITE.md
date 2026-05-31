@@ -13,6 +13,13 @@ E6 avec sa **réalisation** dans le projet.
 | 4 | Réservation d'espaces (coworking) | `controllers/ReservationController.php`, `models/Reservation.php`, `views/reservation/*` | ✅ |
 | 5 | Vues sur l'ensemble des données | `controllers/HomeController.php`, `views/home/index.php` | ✅ |
 
+## Fonctionnalités transverses
+
+| Fonctionnalité | Réalisation (fichiers) | Statut |
+|----------------|------------------------|--------|
+| Authentification des agents (connexion sécurisée) | `controllers/AuthController.php`, `models/Agent.php`, `views/auth/login.php`, garde dans `public/index.php`, table `agent` | ✅ |
+| Filtrage multicritères des collections | `Livre::filter()` / `Materiel::filter()`, formulaires GET dans `views/livre/index.php` et `views/materiel/index.php` | ✅ |
+
 ## Exigences techniques
 
 | Exigence | Réalisation | Statut |
@@ -24,6 +31,7 @@ E6 avec sa **réalisation** dans le projet.
 | **Framework** Bootstrap | Bootstrap 5 (CSS + composants) | ✅ |
 | **Versionning** Git/GitHub | Dépôt `mediathequeleger` | ✅ |
 | Sécurité (injections SQL, XSS) | PDO préparé + échappement `e()` | ✅ |
+| Authentification / contrôle d'accès | Mots de passe hachés (`password_hash`), sessions, garde d'accès | ✅ |
 
 ## Résultats attendus
 
@@ -36,5 +44,7 @@ E6 avec sa **réalisation** dans le projet.
 
 ## Évolutions envisagées (mentionnées au cahier des charges)
 
-- Filtrage multicritères des collections (amorcé : recherche instantanée côté client).
+- Filtrage multicritères des collections : **réalisé** (recherche serveur sur
+  livres et matériels), complété par la recherche instantanée côté client sur les
+  autres listes.
 - Module d'archivage automatique des prêts (statut `terminee`/archivage à ajouter).

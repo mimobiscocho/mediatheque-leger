@@ -5,8 +5,41 @@
     </a>
 </div>
 
-<input type="search" class="form-control mb-3" data-filter="#tbl-livres"
-       placeholder="🔎 Rechercher un livre (titre, auteur, genre…)">
+<!-- Filtres multicritères (soumis en GET au contrôleur Livre) -->
+<form method="get" action="<?= BASE_URL ?>" class="card card-body shadow-sm mb-3">
+    <input type="hidden" name="ctrl" value="livre">
+    <input type="hidden" name="action" value="index">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label mb-1 small fw-semibold">Recherche</label>
+            <input type="search" name="q" class="form-control" value="<?= e($filtres['q']) ?>"
+                   placeholder="🔎 Titre, auteur ou ISBN…">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label mb-1 small fw-semibold">Genre</label>
+            <select name="genre" class="form-select">
+                <option value="">Tous les genres</option>
+                <?php foreach ($genres as $g): ?>
+                    <option value="<?= e($g) ?>" <?= $filtres['genre'] === $g ? 'selected' : '' ?>><?= e($g) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label mb-1 small fw-semibold">Disponibilité</label>
+            <select name="dispo" class="form-select">
+                <option value="">Toutes</option>
+                <option value="1" <?= $filtres['dispo'] === '1' ? 'selected' : '' ?>>Disponibles</option>
+                <option value="0" <?= $filtres['dispo'] === '0' ? 'selected' : '' ?>>Indisponibles</option>
+            </select>
+        </div>
+        <div class="col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-mediatheque w-100"><i class="bi bi-funnel"></i> Filtrer</button>
+            <a href="<?= url('livre') ?>" class="btn btn-outline-secondary" title="Réinitialiser les filtres"><i class="bi bi-x-lg"></i></a>
+        </div>
+    </div>
+</form>
+
+<p class="text-muted small"><?= count($livres) ?> livre(s) trouvé(s).</p>
 
 <div class="card shadow-sm">
     <div class="table-responsive">

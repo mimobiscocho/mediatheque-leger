@@ -4,9 +4,19 @@ class MaterielController extends Controller
 {
     public function index($id = null): void
     {
+        $model   = $this->model('Materiel');
+        $filtres = [
+            'q'         => trim($_GET['q'] ?? ''),
+            'categorie' => trim($_GET['categorie'] ?? ''),
+            'etat'      => trim($_GET['etat'] ?? ''),
+            'dispo'     => $_GET['dispo'] ?? '',
+        ];
+
         $this->view('materiel/index', [
-            'titre'     => 'Gestion des matériels',
-            'materiels' => $this->model('Materiel')->allSorted(),
+            'titre'      => 'Gestion des matériels',
+            'materiels'  => $model->filter($filtres),
+            'categories' => $model->distinctCategories(),
+            'filtres'    => $filtres,
         ]);
     }
 

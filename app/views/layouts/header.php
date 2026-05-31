@@ -38,6 +38,29 @@
                         </a>
                     </li>
                 <?php endforeach; ?>
+
+                <?php if (!empty($_SESSION['agent'])): ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i>
+                            <?= e($_SESSION['agent']['prenom'] . ' ' . $_SESSION['agent']['nom']) ?>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <span class="dropdown-item-text small text-muted">
+                                    <?= e($_SESSION['agent']['email']) ?><br>
+                                    <span class="badge text-bg-secondary"><?= e($_SESSION['agent']['role']) ?></span>
+                                </span>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="<?= url('auth', 'logout') ?>">
+                                    <i class="bi bi-box-arrow-right"></i> Déconnexion
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

@@ -4,9 +4,18 @@ class LivreController extends Controller
 {
     public function index($id = null): void
     {
+        $model   = $this->model('Livre');
+        $filtres = [
+            'q'     => trim($_GET['q'] ?? ''),
+            'genre' => trim($_GET['genre'] ?? ''),
+            'dispo' => $_GET['dispo'] ?? '',
+        ];
+
         $this->view('livre/index', [
-            'titre'  => 'Gestion des livres',
-            'livres' => $this->model('Livre')->allSorted(),
+            'titre'   => 'Gestion des livres',
+            'livres'  => $model->filter($filtres),
+            'genres'  => $model->distinctGenres(),
+            'filtres' => $filtres,
         ]);
     }
 

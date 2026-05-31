@@ -23,6 +23,21 @@ CREATE TABLE abonnement (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+--  agent : utilisateurs de l'application (personnel de la médiathèque)
+--          -> sert à l'authentification (connexion sécurisée)
+-- ---------------------------------------------------------------------
+CREATE TABLE agent (
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    nom           VARCHAR(60)  NOT NULL,
+    prenom        VARCHAR(60)  NOT NULL,
+    email         VARCHAR(120) NOT NULL UNIQUE,   -- sert d'identifiant de connexion
+    mot_de_passe  VARCHAR(255) NOT NULL,          -- haché (password_hash / crypt) — jamais en clair
+    role          ENUM('admin','agent') NOT NULL DEFAULT 'agent',
+    actif         TINYINT(1)   NOT NULL DEFAULT 1,
+    date_creation DATE         NOT NULL
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 --  adherent : les membres de la médiathèque
 -- ---------------------------------------------------------------------
 CREATE TABLE adherent (
@@ -209,6 +224,14 @@ DELIMITER ;
 -- =====================================================================
 --  JEU DE DONNÉES DE DÉMONSTRATION
 -- =====================================================================
+
+-- Comptes agents (mots de passe hachés ; identifiants ci-dessous pour la démo) :
+--   admin@mediatheque.fr  /  admin123   (rôle admin)
+--   agent@mediatheque.fr  /  agent123   (rôle agent)
+INSERT INTO agent (nom, prenom, email, mot_de_passe, role, actif, date_creation) VALUES
+('Admin',  'Médiathèque', 'admin@mediatheque.fr', '$6$nY3BagRte4Nu/3Tq$/LmZiNS9o2RE1s6AFNl9YQLKf8D9.u8hnIBnjVlVD/njanr2eOL0ucVSrpW5.yNtu/OlukPtFrHwpq0J5Btm40', 'admin', 1, '2026-01-05'),
+('Petit',  'Julie',       'agent@mediatheque.fr', '$6$k6zrQJXjaifEL0eW$9JSIw4A1EMwimdsgqgCkq8TkcFDFAzjpLXKrsimwzD.U7sX5Fi0zbiM1Yw/udZY1PALHS.IhuB0ssEi5xBKTH0', 'agent', 1, '2026-01-08');
+
 INSERT INTO abonnement (libelle, tarif, duree_mois, quota_emprunts) VALUES
 ('Standard',   15.00, 12, 5),
 ('Étudiant',    8.00, 12, 5),

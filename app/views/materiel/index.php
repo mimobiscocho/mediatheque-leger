@@ -9,8 +9,50 @@ $etatCls    = ['neuf' => 'text-bg-success', 'bon' => 'text-bg-primary', 'use' =>
     </a>
 </div>
 
-<input type="search" class="form-control mb-3" data-filter="#tbl-materiels"
-       placeholder="🔎 Rechercher un matériel…">
+<!-- Filtres multicritères (soumis en GET au contrôleur Materiel) -->
+<form method="get" action="<?= BASE_URL ?>" class="card card-body shadow-sm mb-3">
+    <input type="hidden" name="ctrl" value="materiel">
+    <input type="hidden" name="action" value="index">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label mb-1 small fw-semibold">Recherche</label>
+            <input type="search" name="q" class="form-control" value="<?= e($filtres['q']) ?>"
+                   placeholder="🔎 Nom ou description…">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label mb-1 small fw-semibold">Catégorie</label>
+            <select name="categorie" class="form-select">
+                <option value="">Toutes</option>
+                <?php foreach ($categories as $cat): ?>
+                    <option value="<?= e($cat) ?>" <?= $filtres['categorie'] === $cat ? 'selected' : '' ?>><?= e($cat) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label mb-1 small fw-semibold">État</label>
+            <select name="etat" class="form-select">
+                <option value="">Tous</option>
+                <?php foreach ($etatLabels as $val => $lbl): ?>
+                    <option value="<?= $val ?>" <?= $filtres['etat'] === $val ? 'selected' : '' ?>><?= $lbl ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label mb-1 small fw-semibold">Disponibilité</label>
+            <select name="dispo" class="form-select">
+                <option value="">Toutes</option>
+                <option value="1" <?= $filtres['dispo'] === '1' ? 'selected' : '' ?>>Disponibles</option>
+                <option value="0" <?= $filtres['dispo'] === '0' ? 'selected' : '' ?>>Indisponibles</option>
+            </select>
+        </div>
+        <div class="col-md-1 d-flex gap-2">
+            <button type="submit" class="btn btn-mediatheque w-100" title="Filtrer"><i class="bi bi-funnel"></i></button>
+            <a href="<?= url('materiel') ?>" class="btn btn-outline-secondary" title="Réinitialiser les filtres"><i class="bi bi-x-lg"></i></a>
+        </div>
+    </div>
+</form>
+
+<p class="text-muted small"><?= count($materiels) ?> matériel(s) trouvé(s).</p>
 
 <div class="card shadow-sm">
     <div class="table-responsive">

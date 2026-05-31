@@ -20,6 +20,13 @@ $ctrl   = preg_replace('/[^a-zA-Z]/', '', $_GET['ctrl']   ?? 'home');
 $action = preg_replace('/[^a-zA-Z]/', '', $_GET['action'] ?? 'index');
 $id     = isset($_GET['id']) ? (int) $_GET['id'] : null;
 
+// --- Contrôle d'accès : toute page exige un agent connecté,
+//     sauf le contrôleur d'authentification (écran de connexion).
+if ($ctrl !== 'auth' && empty($_SESSION['agent'])) {
+    header('Location: ' . url('auth', 'login'));
+    exit;
+}
+
 $controllerClass = ucfirst($ctrl) . 'Controller';
 $controllerFile  = ROOT . '/app/controllers/' . $controllerClass . '.php';
 

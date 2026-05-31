@@ -17,6 +17,45 @@ class Livre extends Model
         )->fetchAll();
     }
 
+    /**
+     * Recherche multicritères (requête paramétrée, anti-injection).
+     * Critères acceptés : q (titre/auteur/ISBN), genre, dispo ('1'|'0').
+     * Un tableau vide retourne tous les livres.
+     */
+    public function filter(array $c): array
+    {
+        $sql    = "SELECT * FROM livre WHERE 1 = 1";
+        $params = [];
+
+        if (!empty($c['q'])) {
+            $sql .= " AND (titre LIKE :q OR auteur LIKE :q OR isbn LIKE :q)";
+            $params['q'] = '%' . $c['q'] . '%';
+        }
+        if (!empty($c['genre'])) {
+            $sql .= " AND genre = :genre";
+            $params['genre'] = $c['genre'];
+        }
+        if (($c['dispo'] ?? '') === '1') {
+            $sql .= " AND quantite_disponible > 0";
+        } elseif (($c['dispo'] ?? '') === '0') {
+            $sql .= " AND quantite_disponible = 0";
+        }
+
+        $sql .= " ORDER BY titre";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
+    /** Liste des genres distincts présents en base (pour le filtre). */
+    public function distinctGenres(): array
+    {
+        return $this->db->query(
+            "SELECT DISTINCT genre FROM livre
+             WHERE genre IS NOT NULL AND genre <> '' ORDER BY genre"
+        )->fetchAll(PDO::FETCH_COLUMN);
+    }
+
     public function create(array $d): bool
     {
         $sql = "INSERT INTO livre

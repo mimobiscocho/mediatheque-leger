@@ -12,14 +12,22 @@ abstract class Controller
         return new $name();
     }
 
-    /** Affiche une vue encadrée par le gabarit (header + footer). */
-    protected function view(string $view, array $data = []): void
+    /**
+     * Affiche une vue. Par défaut elle est encadrée par le gabarit
+     * (header + footer) ; passer $withLayout = false pour une page autonome
+     * (ex. l'écran de connexion).
+     */
+    protected function view(string $view, array $data = [], bool $withLayout = true): void
     {
         extract($data);
         $viewFile = dirname(__DIR__) . '/views/' . $view . '.php';
-        require dirname(__DIR__) . '/views/layouts/header.php';
-        require $viewFile;
-        require dirname(__DIR__) . '/views/layouts/footer.php';
+        if ($withLayout) {
+            require dirname(__DIR__) . '/views/layouts/header.php';
+            require $viewFile;
+            require dirname(__DIR__) . '/views/layouts/footer.php';
+        } else {
+            require $viewFile;
+        }
     }
 
     /** Redirige vers une action puis stoppe le script. */

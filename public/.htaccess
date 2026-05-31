@@ -1,0 +1,5 @@
+# Fichier d'entrée par défaut
+DirectoryIndex index.php
+
+# Désactive le listage des répertoires
+Options -Indexes

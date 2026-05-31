@@ -1,15 +1,17 @@
-# Compilation Java
-out/
-*.class
-sources.txt
+# Configuration locale sensible
+config/config.local.php
 
-# Connecteur JDBC (à télécharger localement, voir lib/README.md)
-lib/*.jar
+# Dépendances / build
+/vendor/
+node_modules/
+
+# Logs et caches
+*.log
+.cache/
 
 # Fichiers système / éditeurs
 .DS_Store
 Thumbs.db
 .idea/
 .vscode/
-*.iml
 *.swp

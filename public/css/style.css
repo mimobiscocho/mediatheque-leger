@@ -1,0 +1,78 @@
+/* =====================================================================
+   Charte graphique — Médiathèque de Bourg-la-Reine
+   ===================================================================== */
+:root {
+    --mediatheque: #1b5e7a;        /* bleu institutionnel */
+    --mediatheque-dark: #134b62;
+    --mediatheque-accent: #e8a33d; /* orange chaleureux */
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f4f6f8;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: #243238;
+}
+
+/* --- Navigation --- */
+.navbar {
+    background-color: var(--mediatheque);
+}
+.navbar .nav-link {
+    border-bottom: 2px solid transparent;
+    transition: border-color .15s ease;
+}
+.navbar .nav-link.active,
+.navbar .nav-link:hover {
+    border-bottom-color: var(--mediatheque-accent);
+}
+
+/* --- Cartes de statistiques --- */
+.card-stat {
+    border: none;
+    border-left: 4px solid var(--mediatheque);
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+.card-stat:hover {
+    transform: translateY(-3px);
+}
+
+/* --- Tableaux --- */
+.table thead th {
+    background-color: var(--mediatheque);
+    color: #fff;
+    border-color: var(--mediatheque-dark);
+    white-space: nowrap;
+}
+.table-hover tbody tr:hover {
+    background-color: #eef4f7;
+}
+
+/* --- Boutons --- */
+.btn-mediatheque {
+    background-color: var(--mediatheque);
+    border-color: var(--mediatheque);
+    color: #fff;
+}
+.btn-mediatheque:hover {
+    background-color: var(--mediatheque-dark);
+    border-color: var(--mediatheque-dark);
+    color: #fff;
+}
+
+/* --- Titres de page --- */
+.page-title {
+    border-left: 5px solid var(--mediatheque-accent);
+    padding-left: .75rem;
+}
+
+/* --- Pied de page --- */
+footer {
+    background-color: #fff;
+}

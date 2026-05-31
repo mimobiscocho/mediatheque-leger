@@ -118,9 +118,11 @@ CREATE TABLE reservation (
 
 -- =====================================================================
 --  TRIGGERS — automatisation de la vérification des disponibilités
+--  (exigence du cahier des charges)
 -- =====================================================================
 DELIMITER //
 
+-- 1) Avant un prêt : refuse l'emprunt si le produit est indisponible
 CREATE TRIGGER trg_pret_before_insert
 BEFORE INSERT ON pret
 FOR EACH ROW
@@ -141,6 +143,7 @@ BEGIN
     END IF;
 END//
 
+-- 2) Après un prêt : décrémente le stock du produit emprunté
 CREATE TRIGGER trg_pret_after_insert
 AFTER INSERT ON pret
 FOR EACH ROW
@@ -152,6 +155,7 @@ BEGIN
     END IF;
 END//
 
+-- 3) Au retour (date_retour_effective renseignée) : ré-incrémente le stock
 CREATE TRIGGER trg_pret_after_update
 AFTER UPDATE ON pret
 FOR EACH ROW
@@ -165,6 +169,9 @@ BEGIN
     END IF;
 END//
 
+-- 3bis) Suppression d'un prêt non rendu : restaure le stock du produit.
+--       (Les suppressions en cascade depuis livre/materiel n'activent pas
+--        ce trigger : MySQL ne déclenche pas les triggers sur action FK.)
 CREATE TRIGGER trg_pret_after_delete
 AFTER DELETE ON pret
 FOR EACH ROW
@@ -178,6 +185,7 @@ BEGIN
     END IF;
 END//
 
+-- 4) Avant une réservation : interdit le chevauchement de créneaux sur une salle
 CREATE TRIGGER trg_reservation_before_insert
 BEFORE INSERT ON reservation
 FOR EACH ROW
@@ -214,29 +222,31 @@ INSERT INTO adherent (nom, prenom, email, telephone, adresse, abonnement_id, dat
 ('Lefevre', 'Hugo',    'hugo.lefevre@email.fr',   '0645678901', '3 place de la Mairie, Bourg-la-Reine',  4, '2026-02-20', '2026-05-20', 1);
 
 INSERT INTO livre (titre, auteur, isbn, editeur, annee_publication, genre, quantite_totale, quantite_disponible) VALUES
-('L''Étranger',     'Albert Camus',             '9782070360024', 'Gallimard',         1942, 'Roman',           4, 4),
-('Le Petit Prince', 'Antoine de Saint-Exupéry', '9782070612758', 'Gallimard',         1943, 'Conte',           6, 6),
-('1984',            'George Orwell',            '9782070368228', 'Gallimard',         1949, 'Science-fiction', 3, 3),
-('Sapiens',         'Yuval Noah Harari',        '9782226257017', 'Albin Michel',      2015, 'Essai',           2, 2),
-('Les Misérables',  'Victor Hugo',              '9782253096337', 'Le Livre de Poche', 1862, 'Roman',           3, 3),
-('Clean Code',      'Robert C. Martin',         '9780132350884', 'Prentice Hall',     2008, 'Informatique',    2, 2);
+('L''Étranger',              'Albert Camus',       '9782070360024', 'Gallimard',  1942, 'Roman',          4, 4),
+('Le Petit Prince',         'Antoine de Saint-Exupéry', '9782070612758', 'Gallimard', 1943, 'Conte',     6, 6),
+('1984',                    'George Orwell',      '9782070368228', 'Gallimard',  1949, 'Science-fiction', 3, 3),
+('Sapiens',                 'Yuval Noah Harari',  '9782226257017', 'Albin Michel', 2015, 'Essai',         2, 2),
+('Les Misérables',          'Victor Hugo',        '9782253096337', 'Le Livre de Poche', 1862, 'Roman',    3, 3),
+('Clean Code',              'Robert C. Martin',   '9780132350884', 'Prentice Hall', 2008, 'Informatique', 2, 2);
 
 INSERT INTO materiel (nom, categorie, description, etat, disponible) VALUES
-('Ordinateur portable Dell', 'Informatique', 'PC portable 15" pour travail sur place',   'bon',  1),
-('Liseuse Kindle',           'Multimédia',   'Liseuse électronique avec 100 titres',     'neuf', 1),
-('Vidéoprojecteur Epson',    'Audiovisuel',  'Projecteur Full HD pour salle de réunion', 'bon',  1),
-('Casque audio Bose',        'Audiovisuel',  'Casque à réduction de bruit',              'use',  1);
+('Ordinateur portable Dell', 'Informatique', 'PC portable 15" pour travail sur place', 'bon',  1),
+('Liseuse Kindle',           'Multimédia',   'Liseuse électronique avec 100 titres',   'neuf', 1),
+('Vidéoprojecteur Epson',    'Audiovisuel',  'Projecteur Full HD pour salle de réunion', 'bon', 1),
+('Casque audio Bose',        'Audiovisuel',  'Casque à réduction de bruit',            'use',  1);
 
 INSERT INTO salle (nom, capacite, equipements, disponible) VALUES
-('Salle Bièvre',      4,  'Écran, tableau blanc, Wi-Fi',       1),
-('Salle Coworking A', 8,  'Wi-Fi, prises individuelles, café', 1),
-('Salle Conférence',  20, 'Vidéoprojecteur, micro, estrade',   1),
-('Box silencieux',    2,  'Isolation phonique, Wi-Fi',         1);
+('Salle Bièvre',     4,  'Écran, tableau blanc, Wi-Fi',          1),
+('Salle Coworking A', 8, 'Wi-Fi, prises individuelles, café',    1),
+('Salle Conférence', 20, 'Vidéoprojecteur, micro, estrade',      1),
+('Box silencieux',    2,  'Isolation phonique, Wi-Fi',           1);
 
+-- Quelques prêts (les triggers décrémentent automatiquement les stocks)
 INSERT INTO pret (adherent_id, livre_id, materiel_id, date_pret, date_retour_prevue, statut) VALUES
 (1, 1, NULL, '2026-05-10', '2026-05-24', 'en_cours'),
 (2, NULL, 2, '2026-05-15', '2026-05-29', 'en_cours');
 
+-- Quelques réservations de salles
 INSERT INTO reservation (adherent_id, salle_id, date_reservation, heure_debut, heure_fin, statut) VALUES
 (3, 2, '2026-06-02', '09:00:00', '12:00:00', 'confirmee'),
 (1, 1, '2026-06-03', '14:00:00', '16:00:00', 'confirmee');

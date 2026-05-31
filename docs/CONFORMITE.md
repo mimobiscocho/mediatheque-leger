@@ -1,41 +1,40 @@
 # Traçabilité — Conformité au cahier des charges
 
-Mise en correspondance de chaque **exigence** de la fiche descriptive E6 avec sa
-**réalisation** dans le projet (client lourd Java).
+Ce document met en correspondance chaque **exigence** de la fiche descriptive
+E6 avec sa **réalisation** dans le projet.
 
 ## Objectifs fonctionnels
 
-| # | Exigence | Réalisation (classes) | Statut |
-|---|----------|-----------------------|--------|
-| 1 | Gestion des adhérents | `controller/AdherentController`, `dao/AdherentDAO`, `view/AdherentPanel` | ✅ |
-| 2 | Gestion des produits (livres + matériels) | `Livre*` / `Materiel*` (model, dao, controller, view) | ✅ |
-| 3 | Système de prêts | `controller/PretController`, `dao/PretDAO`, `view/PretPanel` | ✅ |
-| 4 | Réservation d'espaces (coworking) | `controller/ReservationController`, `dao/ReservationDAO`, `view/ReservationPanel` | ✅ |
-| 5 | Vues sur l'ensemble des données | `view/DashboardPanel` | ✅ |
+| # | Exigence | Réalisation (fichiers) | Statut |
+|---|----------|------------------------|--------|
+| 1 | Gestion des adhérents | `controllers/AdherentController.php`, `models/Adherent.php`, `views/adherent/*` | ✅ |
+| 2 | Gestion des produits (livres + matériels) | `Livre*` / `Materiel*` (controllers, models, views) | ✅ |
+| 3 | Système de prêts | `controllers/PretController.php`, `models/Pret.php`, `views/pret/*` | ✅ |
+| 4 | Réservation d'espaces (coworking) | `controllers/ReservationController.php`, `models/Reservation.php`, `views/reservation/*` | ✅ |
+| 5 | Vues sur l'ensemble des données | `controllers/HomeController.php`, `views/home/index.php` | ✅ |
 
 ## Exigences techniques
 
 | Exigence | Réalisation | Statut |
 |----------|-------------|--------|
-| Application de bureau **Java** | Java 17+ / Swing | ✅ |
-| Interfaces **Java Swing** | `view/` (MainFrame + panneaux) | ✅ |
-| Persistance **JDBC** | `config/Database.java` + couche `dao/` | ✅ |
-| Architecture **MVC** | packages `model` / `dao` / `controller` / `view` | ✅ |
+| Application **web** HTML/CSS/JS + PHP-MySQL | Front PHP + Bootstrap, BD MySQL | ✅ |
+| Architecture **MVC** | `app/core` (Model, Controller) + dossiers `models`/`controllers`/`views` | ✅ |
 | Méthode **CRUD** | Create/Read/Update/Delete sur adhérents, livres, matériels, salles | ✅ |
-| Base de données **avec triggers** | 5 triggers dans `sql/schema.sql` | ✅ |
+| Base de données **avec triggers** | 5 triggers dans `sql/schema.sql` (disponibilités, conflits de créneaux) | ✅ |
+| **Framework** Bootstrap | Bootstrap 5 (CSS + composants) | ✅ |
 | **Versionning** Git/GitHub | Dépôt `mediathequeleger` | ✅ |
-| Sécurité (injections SQL) | `PreparedStatement` dans tous les DAO | ✅ |
+| Sécurité (injections SQL, XSS) | PDO préparé + échappement `e()` | ✅ |
 
 ## Résultats attendus
 
 | Attendu | Livré |
 |---------|-------|
-| Une base de données | `sql/schema.sql` (7 tables, 5 triggers, jeu de données) |
-| Une application fonctionnelle | Application Swing complète (`src/`), compilée sans erreur |
+| Une base de données | `sql/schema.sql` (7 tables, triggers, jeu de données) |
+| Un site internet fonctionnel | Application MVC complète (`app/`, `public/`) |
 | Diagrammes DCU | À joindre au dossier (Drive) |
 | Documentation technique & utilisateur | `README.md` + ce document |
 
 ## Évolutions envisagées (mentionnées au cahier des charges)
 
-- Filtrage multicritères des collections (amorcé : recherche instantanée par module).
-- Module d'archivage automatique des prêts (statut `terminee` à exploiter).
+- Filtrage multicritères des collections (amorcé : recherche instantanée côté client).
+- Module d'archivage automatique des prêts (statut `terminee`/archivage à ajouter).

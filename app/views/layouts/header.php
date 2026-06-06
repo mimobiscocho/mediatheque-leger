@@ -1,20 +1,23 @@
-<?php $cc = preg_replace('/[^a-zA-Z]/', '', $_GET['ctrl'] ?? 'home'); ?>
+<?php $cc = strtolower(preg_replace('/[^a-zA-Z]/', '', $_GET['ctrl'] ?? 'home')); ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($titre ?? 'Accueil') ?> · <?= e(APP_NAME) ?></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="<?= url('home') ?>">
+        <a class="navbar-brand" href="<?= url('home') ?>">
             <i class="bi bi-book-half"></i> Médiathèque
-            <span class="d-none d-md-inline fw-normal opacity-75">de Bourg-la-Reine</span>
+            <span class="d-none d-md-inline opacity-75">de Bourg-la-Reine</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
             <span class="navbar-toggler-icon"></span>

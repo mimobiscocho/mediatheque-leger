@@ -1,78 +1,409 @@
 /* =====================================================================
    Charte graphique — Médiathèque de Bourg-la-Reine
+   Design system simple, moderne et professionnel.
    ===================================================================== */
+
 :root {
-    --mediatheque: #1b5e7a;        /* bleu institutionnel */
-    --mediatheque-dark: #134b62;
-    --mediatheque-accent: #e8a33d; /* orange chaleureux */
+    /* Palette principale : bleu institutionnel moderne */
+    --color-primary:        #1e40af;
+    --color-primary-hover:  #1e3a8a;
+    --color-primary-soft:   #eff6ff;
+    --color-primary-border: #dbeafe;
+
+    /* Accent chaleureux */
+    --color-accent:         #ea580c;
+    --color-accent-soft:    #fff7ed;
+
+    /* Statuts */
+    --color-success:        #15803d;
+    --color-success-soft:   #dcfce7;
+    --color-warning:        #b45309;
+    --color-warning-soft:   #fef3c7;
+    --color-danger:         #b91c1c;
+    --color-danger-soft:    #fee2e2;
+    --color-info:           #0e7490;
+    --color-info-soft:      #cffafe;
+
+    /* Neutres */
+    --color-bg:             #f8fafc;
+    --color-surface:        #ffffff;
+    --color-border:         #e2e8f0;
+    --color-border-strong:  #cbd5e1;
+    --color-text:           #0f172a;
+    --color-text-muted:     #64748b;
+
+    /* Spacing & forme */
+    --radius-sm:    6px;
+    --radius:       10px;
+    --radius-lg:    14px;
+    --shadow-sm:    0 1px 2px rgba(15, 23, 42, .04);
+    --shadow:       0 1px 3px rgba(15, 23, 42, .06), 0 1px 2px rgba(15, 23, 42, .04);
+    --shadow-lg:    0 10px 25px -5px rgba(15, 23, 42, .10), 0 8px 10px -6px rgba(15, 23, 42, .06);
+    --transition:   .15s ease;
 }
 
-html, body {
-    min-height: 100%;
-}
+/* --- Base ---------------------------------------------------------- */
+html, body { min-height: 100%; }
 
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #f4f6f8;
-    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-    color: #243238;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, Oxygen, Ubuntu, "Helvetica Neue", sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- Navigation --- */
+a { color: var(--color-primary); text-decoration: none; }
+a:hover { color: var(--color-primary-hover); text-decoration: underline; }
+
+/* --- Navigation ---------------------------------------------------- */
 .navbar {
-    background-color: var(--mediatheque);
+    background-color: var(--color-surface) !important;
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    padding-top: .55rem;
+    padding-bottom: .55rem;
 }
-.navbar .nav-link {
-    border-bottom: 2px solid transparent;
-    transition: border-color .15s ease;
+.navbar .navbar-brand {
+    color: var(--color-text) !important;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -.01em;
 }
-.navbar .nav-link.active,
-.navbar .nav-link:hover {
-    border-bottom-color: var(--mediatheque-accent);
-}
+.navbar .navbar-brand i { color: var(--color-primary); margin-right: .3rem; }
+.navbar .navbar-brand .opacity-75 { color: var(--color-text-muted) !important; }
 
-/* --- Cartes de statistiques --- */
+.navbar .nav-link {
+    color: var(--color-text-muted) !important;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    padding: .45rem .75rem !important;
+    margin: 0 .15rem;
+    transition: background var(--transition), color var(--transition);
+}
+.navbar .nav-link:hover {
+    background: var(--color-primary-soft);
+    color: var(--color-primary) !important;
+}
+.navbar .nav-link.active {
+    background: var(--color-primary);
+    color: #fff !important;
+}
+.navbar .nav-link i { margin-right: .35rem; }
+
+.navbar .navbar-toggler {
+    border: 1px solid var(--color-border);
+}
+.navbar .navbar-toggler:focus { box-shadow: 0 0 0 .15rem var(--color-primary-soft); }
+
+.dropdown-menu {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    padding: .35rem;
+    min-width: 14rem;
+}
+.dropdown-item {
+    border-radius: var(--radius-sm);
+    padding: .45rem .65rem;
+    font-weight: 500;
+}
+.dropdown-item:hover { background: var(--color-primary-soft); color: var(--color-primary); }
+
+/* --- Titres de page ----------------------------------------------- */
+.page-title {
+    border-left: none;
+    padding-left: 0;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    color: var(--color-text);
+}
+.page-title i { color: var(--color-primary); margin-right: .45rem; }
+
+/* --- Cartes -------------------------------------------------------- */
+.card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--color-border);
+    font-weight: 600;
+    color: var(--color-text);
+    padding: .85rem 1rem;
+}
+.card-header i { color: var(--color-primary); margin-right: .35rem; }
+.shadow-sm { box-shadow: var(--shadow-sm) !important; }
+
+/* Cartes statistiques (dashboard) */
 .card-stat {
-    border: none;
-    border-left: 4px solid var(--mediatheque);
-    transition: transform .12s ease, box-shadow .12s ease;
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-primary);
+    border-radius: var(--radius);
+    transition: transform var(--transition), box-shadow var(--transition);
 }
 .card-stat:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
 }
+.card-stat .fs-3 { font-weight: 700; letter-spacing: -.02em; color: var(--color-text); }
+.card-stat i { color: var(--color-primary); }
 
-/* --- Tableaux --- */
-.table thead th {
-    background-color: var(--mediatheque);
+/* Cartes statut (prêts en cours, réservations à venir) */
+.card.text-bg-primary,
+.card.text-bg-info {
+    background: var(--color-surface) !important;
+    color: var(--color-text) !important;
+    border: 1px solid var(--color-border) !important;
+}
+.card.text-bg-primary .fs-1,
+.card.text-bg-info  .fs-1 { color: var(--color-primary); font-weight: 700; }
+.card.text-bg-primary > .card-body > div > div:last-child,
+.card.text-bg-info  > .card-body > div > div:last-child {
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+.card.text-bg-primary .btn-light,
+.card.text-bg-info  .btn-light {
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary-border);
+    font-weight: 600;
+}
+.card.text-bg-primary .btn-light:hover,
+.card.text-bg-info  .btn-light:hover {
+    background: var(--color-primary);
     color: #fff;
-    border-color: var(--mediatheque-dark);
-    white-space: nowrap;
-}
-.table-hover tbody tr:hover {
-    background-color: #eef4f7;
 }
 
-/* --- Boutons --- */
+/* Carte « Prêts en retard » */
+.card.border-danger { border-color: var(--color-danger-soft) !important; }
+.card.border-danger .card-header.bg-danger {
+    background: var(--color-danger-soft) !important;
+    color: var(--color-danger) !important;
+    border-bottom: 1px solid var(--color-danger-soft);
+    font-weight: 600;
+}
+.card.border-danger .card-header.bg-danger i { color: var(--color-danger); }
+
+/* --- Tableaux ----------------------------------------------------- */
+.table { color: var(--color-text); margin-bottom: 0; }
+.table thead th {
+    background: #f1f5f9;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    font-size: .72rem;
+    letter-spacing: .04em;
+    font-weight: 600;
+    border-color: var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    white-space: nowrap;
+    padding: .65rem .9rem;
+}
+.table tbody td {
+    padding: .75rem .9rem;
+    vertical-align: middle;
+    border-color: var(--color-border);
+}
+.table-hover tbody tr {
+    transition: background var(--transition);
+}
+.table-hover tbody tr:hover { background: #f8fafc; }
+.table.table-sm tbody td { padding: .55rem .9rem; }
+
+/* --- Boutons ------------------------------------------------------- */
+.btn {
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    padding: .45rem .9rem;
+    transition: background var(--transition), border-color var(--transition),
+                color var(--transition), box-shadow var(--transition);
+}
+.btn:focus, .btn:focus-visible {
+    box-shadow: 0 0 0 .2rem var(--color-primary-soft);
+}
+.btn-sm { padding: .3rem .6rem; font-size: .82rem; }
+
 .btn-mediatheque {
-    background-color: var(--mediatheque);
-    border-color: var(--mediatheque);
+    background: var(--color-primary);
+    border: 1px solid var(--color-primary);
     color: #fff;
 }
 .btn-mediatheque:hover {
-    background-color: var(--mediatheque-dark);
-    border-color: var(--mediatheque-dark);
+    background: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
     color: #fff;
 }
 
-/* --- Titres de page --- */
-.page-title {
-    border-left: 5px solid var(--mediatheque-accent);
-    padding-left: .75rem;
+.btn-outline-primary {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text);
+}
+.btn-outline-primary:hover {
+    background: var(--color-primary-soft);
+    border-color: var(--color-primary-border);
+    color: var(--color-primary);
 }
 
-/* --- Pied de page --- */
+.btn-outline-secondary {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text-muted);
+}
+.btn-outline-secondary:hover {
+    background: #f1f5f9;
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+}
+
+.btn-outline-danger {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text-muted);
+}
+.btn-outline-danger:hover {
+    background: var(--color-danger-soft);
+    border-color: var(--color-danger-soft);
+    color: var(--color-danger);
+}
+
+.btn-outline-warning {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text-muted);
+}
+.btn-outline-warning:hover {
+    background: var(--color-warning-soft);
+    border-color: var(--color-warning-soft);
+    color: var(--color-warning);
+}
+
+.btn-success {
+    background: var(--color-success);
+    border: 1px solid var(--color-success);
+    color: #fff;
+}
+.btn-success:hover {
+    background: #166534;
+    border-color: #166534;
+    color: #fff;
+}
+
+/* --- Formulaires --------------------------------------------------- */
+.form-control, .form-select {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: .5rem .7rem;
+    color: var(--color-text);
+    background: var(--color-surface);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+.form-control:focus, .form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 .2rem var(--color-primary-soft);
+}
+.form-label {
+    font-weight: 500;
+    font-size: .85rem;
+    color: var(--color-text);
+    margin-bottom: .35rem;
+}
+.form-text { color: var(--color-text-muted); }
+.input-group-text {
+    background: #f1f5f9;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+}
+
+.form-check-input {
+    border-color: var(--color-border-strong);
+}
+.form-check-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 .2rem var(--color-primary-soft);
+}
+.form-check-input:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+/* --- Badges -------------------------------------------------------- */
+.badge {
+    font-weight: 600;
+    font-size: .72rem;
+    padding: .3em .55em;
+    border-radius: var(--radius-sm);
+    letter-spacing: .01em;
+}
+.text-bg-success    { background: var(--color-success-soft) !important; color: var(--color-success) !important; }
+.text-bg-warning    { background: var(--color-warning-soft) !important; color: var(--color-warning) !important; }
+.text-bg-danger     { background: var(--color-danger-soft)  !important; color: var(--color-danger)  !important; }
+.text-bg-info       { background: var(--color-info-soft)    !important; color: var(--color-info)    !important; }
+.text-bg-primary    { background: var(--color-primary-soft) !important; color: var(--color-primary) !important; }
+.text-bg-secondary  { background: #f1f5f9                   !important; color: var(--color-text-muted) !important; }
+.text-bg-dark       { background: #e2e8f0                   !important; color: var(--color-text) !important; }
+
+/* --- Alertes (flash) ---------------------------------------------- */
+.alert {
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    padding: .75rem 1rem;
+    font-weight: 500;
+}
+.alert-success { background: var(--color-success-soft); color: var(--color-success); border-color: var(--color-success-soft); }
+.alert-danger  { background: var(--color-danger-soft);  color: var(--color-danger);  border-color: var(--color-danger-soft); }
+.alert-warning { background: var(--color-warning-soft); color: var(--color-warning); border-color: var(--color-warning-soft); }
+.alert-info    { background: var(--color-info-soft);    color: var(--color-info);    border-color: var(--color-info-soft); }
+.alert-light   { background: #f8fafc; color: var(--color-text); border-color: var(--color-border); }
+
+/* --- Pied de page -------------------------------------------------- */
 footer {
-    background-color: #fff;
+    background-color: transparent;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: .85rem;
+}
+
+/* --- Mises en valeur ---------------------------------------------- */
+.text-muted { color: var(--color-text-muted) !important; }
+hr.dropdown-divider { border-color: var(--color-border); }
+
+/* --- Login (page autonome) ---------------------------------------- */
+.login-bg {
+    background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(234, 88, 12, .12), transparent 60%),
+        radial-gradient(1000px 500px at -10% 110%, rgba(30, 64, 175, .18), transparent 60%),
+        linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+    min-height: 100vh;
+}
+.login-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+.login-brand {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: .5rem;
+}
+
+/* --- Responsive --------------------------------------------------- */
+@media (max-width: 991px) {
+    .navbar .nav-link { margin: .1rem 0; }
 }

@@ -23,19 +23,23 @@ class AdherentController extends Controller
     public function save($id = null): void
     {
         $data = [
-            'nom'                 => trim($_POST['nom'] ?? ''),
-            'prenom'              => trim($_POST['prenom'] ?? ''),
-            'email'               => trim($_POST['email'] ?? ''),
-            'telephone'           => trim($_POST['telephone'] ?? ''),
-            'adresse'             => trim($_POST['adresse'] ?? ''),
-            'abonnement_id'       => ($_POST['abonnement_id'] ?? '') !== '' ? (int) $_POST['abonnement_id'] : null,
-            'date_inscription'    => $_POST['date_inscription'] ?: date('Y-m-d'),
-            'date_fin_abonnement' => $_POST['date_fin_abonnement'] ?: null,
+            'nom'                 => trim($_POST['nom']                 ?? ''),
+            'prenom'              => trim($_POST['prenom']              ?? ''),
+            'email'               => trim($_POST['email']               ?? ''),
+            'telephone'           => trim($_POST['telephone']           ?? ''),
+            'adresse'             => trim($_POST['adresse']             ?? ''),
+            'abonnement_id'       => ($_POST['abonnement_id']           ?? '') !== '' ? (int) $_POST['abonnement_id'] : null,
+            'date_inscription'    => ($_POST['date_inscription']        ?? '') ?: date('Y-m-d'),
+            'date_fin_abonnement' => ($_POST['date_fin_abonnement']     ?? '') ?: null,
             'actif'               => isset($_POST['actif']) ? 1 : 0,
         ];
 
         if ($data['nom'] === '' || $data['prenom'] === '' || $data['email'] === '') {
             $this->flash('Nom, prénom et email sont obligatoires.', 'danger');
+            $this->redirect('adherent', 'form');
+        }
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $this->flash('Adresse email invalide.', 'danger');
             $this->redirect('adherent', 'form');
         }
 
@@ -44,7 +48,11 @@ class AdherentController extends Controller
             $id ? $model->update($id, $data) : $model->create($data);
             $this->flash($id ? 'Adhérent mis à jour.' : 'Adhérent ajouté.');
         } catch (PDOException $e) {
-            $this->flash('Erreur : ' . $e->getMessage(), 'danger');
+            error_log('[Mediatheque] Adherent save: ' . $e->getMessage());
+            $msg = $e->getCode() === '23000'
+                ? 'Cet email est déjà utilisé par un autre adhérent.'
+                : 'Enregistrement impossible : la donnée saisie est invalide.';
+            $this->flash($msg, 'danger');
         }
         $this->redirect('adherent');
     }

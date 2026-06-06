@@ -33,13 +33,18 @@ $statutLbl = ['confirmee' => 'Confirmée', 'annulee' => 'Annulée', 'terminee' =
                         <td><span class="badge <?= $statutCls[$r['statut']] ?>"><?= $statutLbl[$r['statut']] ?></span></td>
                         <td class="text-end text-nowrap">
                             <?php if ($r['statut'] === 'confirmee'): ?>
-                                <a href="<?= url('reservation', 'annuler', ['id' => $r['id']]) ?>"
-                                   class="btn btn-sm btn-outline-warning" title="Annuler"
-                                   data-confirm="Annuler cette réservation ?"><i class="bi bi-x-circle"></i> Annuler</a>
+                                <?= postButton('reservation', 'annuler', (int) $r['id'],
+                                    '<i class="bi bi-x-circle"></i> Annuler', [
+                                        'class'   => 'btn btn-sm btn-outline-warning',
+                                        'title'   => 'Annuler',
+                                        'confirm' => 'Annuler cette réservation ?',
+                                ]) ?>
                             <?php endif; ?>
-                            <a href="<?= url('reservation', 'delete', ['id' => $r['id']]) ?>"
-                               class="btn btn-sm btn-outline-danger" title="Supprimer"
-                               data-confirm="Supprimer cette réservation ?"><i class="bi bi-trash"></i></a>
+                            <?= postButton('reservation', 'delete', (int) $r['id'], '<i class="bi bi-trash"></i>', [
+                                'class'   => 'btn btn-sm btn-outline-danger',
+                                'title'   => 'Supprimer',
+                                'confirm' => 'Supprimer cette réservation ?',
+                            ]) ?>
                         </td>
                     </tr>
                 <?php endforeach; endif; ?>

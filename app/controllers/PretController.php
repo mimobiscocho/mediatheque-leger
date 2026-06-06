@@ -42,16 +42,18 @@ class PretController extends Controller
             'adherent_id'        => $adherentId,
             'livre_id'           => $livreId,
             'materiel_id'        => $materielId,
-            'date_pret'          => $_POST['date_pret'] ?: date('Y-m-d'),
-            'date_retour_prevue' => $_POST['date_retour_prevue'] ?: date('Y-m-d', strtotime('+14 days')),
+            'date_pret'          => ($_POST['date_pret']          ?? '') ?: date('Y-m-d'),
+            'date_retour_prevue' => ($_POST['date_retour_prevue'] ?? '') ?: date('Y-m-d', strtotime('+14 days')),
         ];
 
         try {
             $this->model('Pret')->create($data);
             $this->flash('Prêt enregistré : la disponibilité du produit a été mise à jour.');
         } catch (PDOException $e) {
-            // Message remonté par le trigger trg_pret_before_insert
-            $this->flash('Prêt refusé : ' . $e->getMessage(), 'danger');
+            error_log('[Mediatheque] Pret save: ' . $e->getMessage());
+            // Les triggers métier (SQLSTATE 45000) renvoient un message lisible.
+            $msg = $e->getCode() === '45000' ? $e->getMessage() : 'Le prêt n\'a pas pu être enregistré.';
+            $this->flash('Prêt refusé : ' . $msg, 'danger');
         }
         $this->redirect('pret');
     }

@@ -37,14 +37,27 @@ E6 avec sa **réalisation** dans le projet.
 
 | Attendu | Livré |
 |---------|-------|
-| Une base de données | `sql/schema.sql` (7 tables, triggers, jeu de données) |
+| Une base de données | `sql/schema.sql` (8 tables, 5 triggers, jeu de données) |
 | Un site internet fonctionnel | Application MVC complète (`app/`, `public/`) |
 | Diagrammes DCU | À joindre au dossier (Drive) |
 | Documentation technique & utilisateur | `README.md` + ce document |
+
+## Sécurité applicative
+
+| Mesure | Mise en œuvre |
+|--------|---------------|
+| Mots de passe hachés (bcrypt) | `password_hash` / `password_verify` (cf. `Agent::create`, `AuthController`) |
+| Session sécurisée | `HttpOnly` + `SameSite=Lax` + régénération d'ID (`public/index.php`) |
+| Protection CSRF | Jeton de session vérifié sur tout POST (`helpers.php`, formulaires) |
+| Actions destructives en POST | Suppression / retour / annulation / déconnexion via `postButton()` |
+| Anti-injection SQL | Requêtes préparées PDO sur 100 % des interactions BD |
+| Anti-XSS | Échappement systématique via `e()` |
+| Pas de fuite d'erreur PDO | Messages génériques côté UI, détails techniques journalisés (`error_log`) |
 
 ## Évolutions envisagées (mentionnées au cahier des charges)
 
 - Filtrage multicritères des collections : **réalisé** (recherche serveur sur
   livres et matériels), complété par la recherche instantanée côté client sur les
   autres listes.
-- Module d'archivage automatique des prêts (statut `terminee`/archivage à ajouter).
+- Mise à jour automatique du statut `en_retard` : **réalisée** (passage en
+  `en_retard` au premier accès journalier — cf. `public/index.php`).

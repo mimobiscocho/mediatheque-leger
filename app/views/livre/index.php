@@ -69,9 +69,11 @@
                         <td class="text-end text-nowrap">
                             <a href="<?= url('livre', 'form', ['id' => $l['id']]) ?>"
                                class="btn btn-sm btn-outline-primary" title="Modifier"><i class="bi bi-pencil"></i></a>
-                            <a href="<?= url('livre', 'delete', ['id' => $l['id']]) ?>"
-                               class="btn btn-sm btn-outline-danger" title="Supprimer"
-                               data-confirm="Supprimer ce livre ?"><i class="bi bi-trash"></i></a>
+                            <?= postButton('livre', 'delete', (int) $l['id'], '<i class="bi bi-trash"></i>', [
+                                'class'   => 'btn btn-sm btn-outline-danger',
+                                'title'   => 'Supprimer',
+                                'confirm' => 'Supprimer ce livre ?',
+                            ]) ?>
                         </td>
                     </tr>
                 <?php endforeach; endif; ?>

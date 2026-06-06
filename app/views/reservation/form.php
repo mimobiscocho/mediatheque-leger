@@ -8,6 +8,7 @@
             <div class="alert alert-warning mb-0">Aucune salle n'est enregistrée. Créez d'abord une salle.</div>
         <?php else: ?>
         <form method="post" action="<?= url('reservation', 'save') ?>" class="row g-3">
+            <?= csrf_field() ?>
             <div class="col-md-6">
                 <label class="form-label">Adhérent <span class="text-danger">*</span></label>
                 <select name="adherent_id" class="form-select" required>

@@ -22,7 +22,7 @@ class ReservationController extends Controller
     public function save($id = null): void
     {
         $adherentId = (int) ($_POST['adherent_id'] ?? 0);
-        $salleId    = (int) ($_POST['salle_id'] ?? 0);
+        $salleId    = (int) ($_POST['salle_id']    ?? 0);
         if (!$adherentId || !$salleId) {
             $this->flash('Veuillez sélectionner un adhérent et une salle.', 'danger');
             $this->redirect('reservation', 'form');
@@ -31,13 +31,17 @@ class ReservationController extends Controller
         $data = [
             'adherent_id'      => $adherentId,
             'salle_id'         => $salleId,
-            'date_reservation' => $_POST['date_reservation'] ?: date('Y-m-d'),
-            'heure_debut'      => $_POST['heure_debut'] ?: '09:00',
-            'heure_fin'        => $_POST['heure_fin'] ?: '10:00',
+            'date_reservation' => ($_POST['date_reservation'] ?? '') ?: date('Y-m-d'),
+            'heure_debut'      => ($_POST['heure_debut']      ?? '') ?: '09:00',
+            'heure_fin'        => ($_POST['heure_fin']        ?? '') ?: '10:00',
         ];
 
         if ($data['heure_fin'] <= $data['heure_debut']) {
             $this->flash('L\'heure de fin doit être postérieure à l\'heure de début.', 'danger');
+            $this->redirect('reservation', 'form');
+        }
+        if ($data['date_reservation'] < date('Y-m-d')) {
+            $this->flash('La date de réservation ne peut pas être dans le passé.', 'danger');
             $this->redirect('reservation', 'form');
         }
 
@@ -45,8 +49,10 @@ class ReservationController extends Controller
             $this->model('Reservation')->create($data);
             $this->flash('Réservation confirmée.');
         } catch (PDOException $e) {
-            // Message remonté par le trigger trg_reservation_before_insert
-            $this->flash('Réservation refusée : ' . $e->getMessage(), 'danger');
+            error_log('[Mediatheque] Reservation save: ' . $e->getMessage());
+            // Les triggers métier (SQLSTATE 45000) renvoient un message lisible.
+            $msg = $e->getCode() === '45000' ? $e->getMessage() : 'La réservation n\'a pas pu être enregistrée.';
+            $this->flash('Réservation refusée : ' . $msg, 'danger');
         }
         $this->redirect('reservation');
     }

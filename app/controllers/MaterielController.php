@@ -35,8 +35,8 @@ class MaterielController extends Controller
         $etat  = in_array($_POST['etat'] ?? '', $etats, true) ? $_POST['etat'] : 'bon';
 
         $data = [
-            'nom'         => trim($_POST['nom'] ?? ''),
-            'categorie'   => trim($_POST['categorie'] ?? ''),
+            'nom'         => trim($_POST['nom']         ?? ''),
+            'categorie'   => trim($_POST['categorie']   ?? ''),
             'description' => trim($_POST['description'] ?? ''),
             'etat'        => $etat,
             'disponible'  => isset($_POST['disponible']) ? 1 : 0,
@@ -52,7 +52,8 @@ class MaterielController extends Controller
             $id ? $model->update($id, $data) : $model->create($data);
             $this->flash($id ? 'Matériel mis à jour.' : 'Matériel ajouté.');
         } catch (PDOException $e) {
-            $this->flash('Erreur : ' . $e->getMessage(), 'danger');
+            error_log('[Mediatheque] Materiel save: ' . $e->getMessage());
+            $this->flash('Enregistrement impossible : la donnée saisie est invalide.', 'danger');
         }
         $this->redirect('materiel');
     }

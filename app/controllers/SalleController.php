@@ -22,7 +22,7 @@ class SalleController extends Controller
     public function save($id = null): void
     {
         $data = [
-            'nom'         => trim($_POST['nom'] ?? ''),
+            'nom'         => trim($_POST['nom']         ?? ''),
             'capacite'    => max(1, (int) ($_POST['capacite'] ?? 1)),
             'equipements' => trim($_POST['equipements'] ?? ''),
             'disponible'  => isset($_POST['disponible']) ? 1 : 0,
@@ -38,7 +38,8 @@ class SalleController extends Controller
             $id ? $model->update($id, $data) : $model->create($data);
             $this->flash($id ? 'Salle mise à jour.' : 'Salle ajoutée.');
         } catch (PDOException $e) {
-            $this->flash('Erreur : ' . $e->getMessage(), 'danger');
+            error_log('[Mediatheque] Salle save: ' . $e->getMessage());
+            $this->flash('Enregistrement impossible : la donnée saisie est invalide.', 'danger');
         }
         $this->redirect('salle');
     }

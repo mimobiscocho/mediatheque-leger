@@ -121,10 +121,18 @@ Copier le dossier dans `htdocs/`, puis ouvrir
 
 - **Authentification obligatoire** : toute page exige un agent connecté (contrôle
   d'accès dans `public/index.php` ; redirection vers l'écran de connexion sinon).
-- **Mots de passe hachés** (`password_hash` / `password_verify`) — jamais stockés
-  en clair. Régénération de l'identifiant de session à la connexion (anti-fixation).
+- **Mots de passe hachés en bcrypt** (`password_hash(..., PASSWORD_DEFAULT)`,
+  coût 12) — jamais stockés en clair. Régénération de l'identifiant de session
+  à la connexion (anti-fixation).
+- **Cookie de session durci** : `HttpOnly` + `SameSite=Lax` + `Secure` si HTTPS.
+- **Protection CSRF** : jeton de session vérifié sur tout POST (`csrf_field()`
+  dans les formulaires, `csrf_verify()` dans le contrôleur frontal). Toutes les
+  actions destructives (suppression, retour, annulation, déconnexion) passent
+  par un formulaire POST + jeton, jamais via un simple lien GET.
 - **Requêtes préparées (PDO)** sur toutes les interactions BD → anti-injection SQL.
 - **Échappement HTML** systématique des sorties via `e()` → anti-XSS.
+- **Pas de fuite d'erreur SQL** : messages génériques à l'écran, détails
+  techniques journalisés via `error_log`.
 - **Séparation des dossiers** : seul `public/` est exposé ; `app/` et `config/`
   restent hors de la racine web en production.
 - **Nettoyage des paramètres de routage** (liste blanche de caractères).
@@ -161,7 +169,15 @@ Copier le dossier dans `htdocs/`, puis ouvrir
 
 - Diagrammes (DCU, MCD/MLD), maquettes, Gantt : voir le Drive du projet.
 - Code source : <https://github.com/mimobiscocho/mediathequeleger>
-- Documentation de conformité : [`docs/CONFORMITE.md`](docs/CONFORMITE.md)
+
+### Documentation interne
+
+| Document | Contenu |
+|----------|---------|
+| [`docs/documentation-technique.md`](docs/documentation-technique.md) | Architecture MVC, routage, modèle de données, triggers, sécurité, build |
+| [`docs/documentation-utilisateur.md`](docs/documentation-utilisateur.md) | Guide utilisateur agent (connexion, modules, messages) |
+| [`docs/gestion-incidents.md`](docs/gestion-incidents.md) | Suivi des incidents rencontrés et résolutions (GLPI) |
+| [`docs/CONFORMITE.md`](docs/CONFORMITE.md) | Traçabilité au cahier des charges E6 |
 
 ---
 

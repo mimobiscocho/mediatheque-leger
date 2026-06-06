@@ -54,9 +54,12 @@
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <a class="dropdown-item" href="<?= url('auth', 'logout') ?>">
-                                    <i class="bi bi-box-arrow-right"></i> Déconnexion
-                                </a>
+                                <form method="post" action="<?= url('auth', 'logout') ?>" class="px-1">
+                                    <?= csrf_field() ?>
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="bi bi-box-arrow-right"></i> Déconnexion
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </li>

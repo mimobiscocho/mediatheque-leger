@@ -5,6 +5,7 @@
 <div class="card shadow-sm">
     <div class="card-body">
         <form method="post" action="<?= $action ?>" class="row g-3">
+            <?= csrf_field() ?>
             <div class="col-md-8">
                 <label class="form-label">Nom de la salle <span class="text-danger">*</span></label>
                 <input type="text" name="nom" class="form-control" required

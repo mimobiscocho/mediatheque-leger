@@ -82,9 +82,11 @@ $etatCls    = ['neuf' => 'text-bg-success', 'bon' => 'text-bg-primary', 'use' =>
                         <td class="text-end text-nowrap">
                             <a href="<?= url('materiel', 'form', ['id' => $m['id']]) ?>"
                                class="btn btn-sm btn-outline-primary" title="Modifier"><i class="bi bi-pencil"></i></a>
-                            <a href="<?= url('materiel', 'delete', ['id' => $m['id']]) ?>"
-                               class="btn btn-sm btn-outline-danger" title="Supprimer"
-                               data-confirm="Supprimer ce matériel ?"><i class="bi bi-trash"></i></a>
+                            <?= postButton('materiel', 'delete', (int) $m['id'], '<i class="bi bi-trash"></i>', [
+                                'class'   => 'btn btn-sm btn-outline-danger',
+                                'title'   => 'Supprimer',
+                                'confirm' => 'Supprimer ce matériel ?',
+                            ]) ?>
                         </td>
                     </tr>
                 <?php endforeach; endif; ?>

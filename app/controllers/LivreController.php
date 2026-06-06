@@ -33,15 +33,15 @@ class LivreController extends Controller
         $total = max(0, (int) ($_POST['quantite_totale'] ?? 1));
         $dispo = ($_POST['quantite_disponible'] ?? '') !== ''
             ? (int) $_POST['quantite_disponible'] : $total;
-        $dispo = min($dispo, $total); // la dispo ne peut dépasser le stock total
+        $dispo = max(0, min($dispo, $total)); // la dispo est bornée à [0 ; total]
 
         $data = [
-            'titre'               => trim($_POST['titre'] ?? ''),
-            'auteur'              => trim($_POST['auteur'] ?? ''),
-            'isbn'                => trim($_POST['isbn'] ?? ''),
-            'editeur'             => trim($_POST['editeur'] ?? ''),
-            'annee_publication'   => ($_POST['annee_publication'] ?? '') !== '' ? (int) $_POST['annee_publication'] : null,
-            'genre'               => trim($_POST['genre'] ?? ''),
+            'titre'               => trim($_POST['titre']             ?? ''),
+            'auteur'              => trim($_POST['auteur']            ?? ''),
+            'isbn'                => trim($_POST['isbn']              ?? ''),
+            'editeur'             => trim($_POST['editeur']           ?? ''),
+            'annee_publication'   => ($_POST['annee_publication']     ?? '') !== '' ? (int) $_POST['annee_publication'] : null,
+            'genre'               => trim($_POST['genre']             ?? ''),
             'quantite_totale'     => $total,
             'quantite_disponible' => $dispo,
         ];
@@ -56,7 +56,8 @@ class LivreController extends Controller
             $id ? $model->update($id, $data) : $model->create($data);
             $this->flash($id ? 'Livre mis à jour.' : 'Livre ajouté.');
         } catch (PDOException $e) {
-            $this->flash('Erreur : ' . $e->getMessage(), 'danger');
+            error_log('[Mediatheque] Livre save: ' . $e->getMessage());
+            $this->flash('Enregistrement impossible : la donnée saisie est invalide.', 'danger');
         }
         $this->redirect('livre');
     }

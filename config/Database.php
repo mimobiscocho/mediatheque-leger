@@ -19,9 +19,16 @@ class Database
             try {
                 self::$instance = new PDO($dsn, DB_USER, DB_PASS, $options);
             } catch (PDOException $e) {
-                die('Erreur de connexion à la base de données : ' . $e->getMessage()
-                    . '<br>Vérifiez la configuration dans config/config.php et que la base "'
-                    . DB_NAME . '" a bien été importée (sql/schema.sql).');
+                // On journalise l'erreur technique côté serveur,
+                // et on n'affiche qu'un message neutre côté navigateur
+                // (pas de fuite d'identifiants, d'hôte ou de schéma).
+                error_log('[Mediatheque] Connexion BD impossible : ' . $e->getMessage());
+                http_response_code(503);
+                exit(
+                    '<h1>Service indisponible</h1>'
+                  . '<p>La base de données est momentanément inaccessible. '
+                  . 'Veuillez réessayer dans quelques instants.</p>'
+                );
             }
         }
         return self::$instance;

@@ -38,9 +38,11 @@
                         <td class="text-end text-nowrap">
                             <a href="<?= url('adherent', 'form', ['id' => $a['id']]) ?>"
                                class="btn btn-sm btn-outline-primary" title="Modifier"><i class="bi bi-pencil"></i></a>
-                            <a href="<?= url('adherent', 'delete', ['id' => $a['id']]) ?>"
-                               class="btn btn-sm btn-outline-danger" title="Supprimer"
-                               data-confirm="Supprimer définitivement cet adhérent ?"><i class="bi bi-trash"></i></a>
+                            <?= postButton('adherent', 'delete', (int) $a['id'], '<i class="bi bi-trash"></i>', [
+                                'class'   => 'btn btn-sm btn-outline-danger',
+                                'title'   => 'Supprimer',
+                                'confirm' => 'Supprimer définitivement cet adhérent ?',
+                            ]) ?>
                         </td>
                     </tr>
                 <?php endforeach; endif; ?>

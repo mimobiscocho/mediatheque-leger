@@ -200,12 +200,22 @@ BEGIN
     END IF;
 END//
 
--- 4) Avant une réservation : interdit le chevauchement de créneaux sur une salle
+-- 4) Avant une réservation :
+--    - refuse une salle marquée indisponible
+--    - interdit le chevauchement de créneaux sur une salle
 CREATE TRIGGER trg_reservation_before_insert
 BEFORE INSERT ON reservation
 FOR EACH ROW
 BEGIN
+    DECLARE v_dispo TINYINT;
     DECLARE nb INT;
+
+    SELECT disponible INTO v_dispo FROM salle WHERE id = NEW.salle_id;
+    IF v_dispo IS NULL OR v_dispo = 0 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Salle indisponible : réservation impossible.';
+    END IF;
+
     SELECT COUNT(*) INTO nb
     FROM reservation
     WHERE salle_id = NEW.salle_id
@@ -228,9 +238,10 @@ DELIMITER ;
 -- Comptes agents (mots de passe hachés ; identifiants ci-dessous pour la démo) :
 --   admin@mediatheque.fr  /  admin123   (rôle admin)
 --   agent@mediatheque.fr  /  agent123   (rôle agent)
+-- Hachage bcrypt (password_hash / PASSWORD_DEFAULT), coût 12.
 INSERT INTO agent (nom, prenom, email, mot_de_passe, role, actif, date_creation) VALUES
-('Admin',  'Médiathèque', 'admin@mediatheque.fr', '$6$nY3BagRte4Nu/3Tq$/LmZiNS9o2RE1s6AFNl9YQLKf8D9.u8hnIBnjVlVD/njanr2eOL0ucVSrpW5.yNtu/OlukPtFrHwpq0J5Btm40', 'admin', 1, '2026-01-05'),
-('Petit',  'Julie',       'agent@mediatheque.fr', '$6$k6zrQJXjaifEL0eW$9JSIw4A1EMwimdsgqgCkq8TkcFDFAzjpLXKrsimwzD.U7sX5Fi0zbiM1Yw/udZY1PALHS.IhuB0ssEi5xBKTH0', 'agent', 1, '2026-01-08');
+('Admin',  'Médiathèque', 'admin@mediatheque.fr', '$2y$12$8T9Jnas.F8CWgnJxZ2lZceWE9oIQnj0FPS0tQ2PxwFT0mL7BetlMi', 'admin', 1, '2026-01-05'),
+('Petit',  'Julie',       'agent@mediatheque.fr', '$2y$12$ywpyIeBqfufB0t4z1tdzU.uF.wCjAoU2g.SyITK2HZ5VTWzeUU8XS', 'agent', 1, '2026-01-08');
 
 INSERT INTO abonnement (libelle, tarif, duree_mois, quota_emprunts) VALUES
 ('Standard',   15.00, 12, 5),

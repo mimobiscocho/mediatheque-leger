@@ -1,6 +1,3 @@
-# Configuration locale sensible
-config/config.local.php
-
 # Dépendances / build
 /vendor/
 node_modules/
@@ -15,3 +12,6 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# Config locale Claude Code
+.claude/settings.local.json

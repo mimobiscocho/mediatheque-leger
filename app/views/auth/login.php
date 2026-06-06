@@ -25,6 +25,7 @@
             <?php endif; ?>
 
             <form method="post" action="<?= url('auth', 'authenticate') ?>">
+                <?= csrf_field() ?>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
                     <div class="input-group">

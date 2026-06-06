@@ -48,15 +48,18 @@
                         </td>
                         <td class="text-end text-nowrap">
                             <?php if (!$rendu): ?>
-                                <a href="<?= url('pret', 'retour', ['id' => $p['id']]) ?>"
-                                   class="btn btn-sm btn-success" title="Enregistrer le retour"
-                                   data-confirm="Confirmer le retour de ce produit ?">
-                                    <i class="bi bi-box-arrow-in-down"></i> Retour
-                                </a>
+                                <?= postButton('pret', 'retour', (int) $p['id'],
+                                    '<i class="bi bi-box-arrow-in-down"></i> Retour', [
+                                        'class'   => 'btn btn-sm btn-success',
+                                        'title'   => 'Enregistrer le retour',
+                                        'confirm' => 'Confirmer le retour de ce produit ?',
+                                ]) ?>
                             <?php endif; ?>
-                            <a href="<?= url('pret', 'delete', ['id' => $p['id']]) ?>"
-                               class="btn btn-sm btn-outline-danger" title="Supprimer"
-                               data-confirm="Supprimer ce prêt ?"><i class="bi bi-trash"></i></a>
+                            <?= postButton('pret', 'delete', (int) $p['id'], '<i class="bi bi-trash"></i>', [
+                                'class'   => 'btn btn-sm btn-outline-danger',
+                                'title'   => 'Supprimer',
+                                'confirm' => 'Supprimer ce prêt ?',
+                            ]) ?>
                         </td>
                     </tr>
                 <?php endforeach; endif; ?>

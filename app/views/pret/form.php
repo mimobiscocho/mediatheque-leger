@@ -10,6 +10,7 @@
             </div>
         <?php else: ?>
         <form method="post" action="<?= url('pret', 'save') ?>" class="row g-3">
+            <?= csrf_field() ?>
             <div class="col-md-6">
                 <label class="form-label">Adhérent <span class="text-danger">*</span></label>
                 <select name="adherent_id" class="form-select" required>

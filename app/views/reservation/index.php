@@ -1,6 +1,6 @@
 <?php
-$statutCls = ['confirmee' => 'text-bg-success', 'annulee' => 'text-bg-secondary', 'terminee' => 'text-bg-dark'];
-$statutLbl = ['confirmee' => 'Confirmée', 'annulee' => 'Annulée', 'terminee' => 'Terminée'];
+$statutCls = ['CONFIRMEE' => 'text-bg-success', 'ANNULEE' => 'text-bg-secondary', 'TERMINEE' => 'text-bg-dark'];
+$statutLbl = ['CONFIRMEE' => 'Confirmée', 'ANNULEE' => 'Annulée', 'TERMINEE' => 'Terminée'];
 ?>
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <h1 class="h3 page-title mb-0"><i class="bi bi-calendar-check"></i> Réservation d'espaces</h1>
@@ -32,7 +32,7 @@ $statutLbl = ['confirmee' => 'Confirmée', 'annulee' => 'Annulée', 'terminee' =
                         <td><?= substr($r['heure_debut'], 0, 5) ?> – <?= substr($r['heure_fin'], 0, 5) ?></td>
                         <td><span class="badge <?= $statutCls[$r['statut']] ?>"><?= $statutLbl[$r['statut']] ?></span></td>
                         <td class="text-end text-nowrap">
-                            <?php if ($r['statut'] === 'confirmee'): ?>
+                            <?php if ($r['statut'] === 'CONFIRMEE'): ?>
                                 <?= postButton('reservation', 'annuler', (int) $r['id'],
                                     '<i class="bi bi-x-circle"></i> Annuler', [
                                         'class'   => 'btn btn-sm btn-outline-warning',

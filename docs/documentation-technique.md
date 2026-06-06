@@ -104,9 +104,20 @@ Nginx) est un choix volontaire : l'application reste **fonctionnelle dans
 n'importe quel environnement**, y compris XAMPP / WAMP, sans configuration
 supplémentaire.
 
-## 4. Modèle de données
+## 4. Modèle de données — schéma unifié
 
-8 tables, en moteur **InnoDB**, jeu de caractères `utf8mb4_unicode_ci`.
+L'application partage **une seule base** `mediatheque` avec le client lourd
+(Java Swing). Le schéma est strictement identique dans les deux dépôts ; il
+suffit d'importer le script SQL une seule fois pour initialiser les deux
+applications.
+
+Le client léger exploite directement : `agent` (auth), `abonnement`,
+`adherent`, `livre`, `materiel`, `pret`. Il **partage** avec le client
+lourd les tables `adherent`, `salle` et `reservation`. Les tables
+`profil`, `technicien`, `animation` et `facture` sont présentes dans la
+base unifiée mais utilisées par le seul client lourd.
+
+Toutes en moteur **InnoDB**, jeu de caractères `utf8mb4_unicode_ci`.
 
 ### Schéma relationnel (simplifié)
 
@@ -277,10 +288,11 @@ mysql -u root -p < sql/schema.sql
 ```
 
 Le script :
-- supprime puis recrée la base `mediatheque` ;
-- crée 8 tables + 5 triggers ;
-- insère un jeu de démonstration : 2 agents, 4 abonnements, 4 adhérents,
-  6 livres, 4 matériels, 4 salles, 2 prêts et 2 réservations.
+- supprime puis recrée la base `mediatheque` (partagée avec le client lourd) ;
+- crée 11 tables + 8 triggers ;
+- insère un jeu de démonstration : 2 agents + 2 profils, 4 abonnements,
+  7 adhérents, 6 livres, 4 matériels, 8 salles, 3 techniciens, 3 animations,
+  2 prêts, 4 réservations et 4 factures.
 
 ### Étape 2 — Configurer la connexion
 

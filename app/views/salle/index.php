@@ -21,7 +21,7 @@
                         <?php endif; ?>
                     </div>
                     <p class="text-muted mb-2"><i class="bi bi-people"></i> Capacité : <?= (int) $s['capacite'] ?> personnes</p>
-                    <p class="small mb-3"><?= e($s['equipements']) ?: '<span class="text-muted">Aucun équipement renseigné</span>' ?></p>
+                    <p class="small mb-3"><?= e($s['equipement']) ?: '<span class="text-muted">Aucun équipement renseigné</span>' ?></p>
                     <div class="d-flex gap-2 align-items-center">
                         <a href="<?= url('reservation', 'form') ?>" class="btn btn-sm btn-mediatheque">
                             <i class="bi bi-calendar-plus"></i> Réserver

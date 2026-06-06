@@ -24,7 +24,7 @@ class SalleController extends Controller
         $data = [
             'nom'         => trim($_POST['nom']         ?? ''),
             'capacite'    => max(1, (int) ($_POST['capacite'] ?? 1)),
-            'equipements' => trim($_POST['equipements'] ?? ''),
+            'equipement' => trim($_POST['equipement'] ?? ''),
             'disponible'  => isset($_POST['disponible']) ? 1 : 0,
         ];
 

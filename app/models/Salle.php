@@ -11,8 +11,8 @@ class Salle extends Model
 
     public function create(array $d): bool
     {
-        $sql = "INSERT INTO salle (nom, capacite, equipements, disponible)
-                VALUES (:nom, :capacite, :equipements, :disponible)";
+        $sql = "INSERT INTO salle (nom, capacite, equipement, disponible)
+                VALUES (:nom, :capacite, :equipement, :disponible)";
         return $this->db->prepare($sql)->execute($d);
     }
 
@@ -21,7 +21,7 @@ class Salle extends Model
         $d['id'] = $id;
         $sql = "UPDATE salle SET
                     nom = :nom, capacite = :capacite,
-                    equipements = :equipements, disponible = :disponible
+                    equipement = :equipement, disponible = :disponible
                 WHERE id = :id";
         return $this->db->prepare($sql)->execute($d);
     }

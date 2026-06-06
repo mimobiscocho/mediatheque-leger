@@ -22,7 +22,7 @@ class Reservation extends Model
     {
         return (int) $this->db->query(
             "SELECT COUNT(*) FROM reservation
-             WHERE statut = 'confirmee' AND date_reservation >= CURDATE()"
+             WHERE statut = 'CONFIRMEE' AND date_reservation >= CURDATE()"
         )->fetchColumn();
     }
 
@@ -36,14 +36,14 @@ class Reservation extends Model
         $sql = "INSERT INTO reservation
                     (adherent_id, salle_id, date_reservation, heure_debut, heure_fin, statut)
                 VALUES
-                    (:adherent_id, :salle_id, :date_reservation, :heure_debut, :heure_fin, 'confirmee')";
+                    (:adherent_id, :salle_id, :date_reservation, :heure_debut, :heure_fin, 'CONFIRMEE')";
         return $this->db->prepare($sql)->execute($d);
     }
 
     /** Annule une réservation. */
     public function annuler(int $id): bool
     {
-        $sql = "UPDATE reservation SET statut = 'annulee' WHERE id = :id";
+        $sql = "UPDATE reservation SET statut = 'ANNULEE' WHERE id = :id";
         return $this->db->prepare($sql)->execute(['id' => $id]);
     }
 }

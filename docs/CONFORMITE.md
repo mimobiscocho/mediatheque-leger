@@ -37,7 +37,7 @@ E6 avec sa **réalisation** dans le projet.
 
 | Attendu | Livré |
 |---------|-------|
-| Une base de données | `sql/schema.sql` (8 tables, 5 triggers, jeu de données) |
+| Une base de données | `sql/schema.sql` — base unifiée `mediatheque` partagée avec le client lourd (11 tables, 8 triggers, jeu de données) |
 | Un site internet fonctionnel | Application MVC complète (`app/`, `public/`) |
 | Diagrammes DCU | À joindre au dossier (Drive) |
 | Documentation technique & utilisateur | `README.md` + ce document |

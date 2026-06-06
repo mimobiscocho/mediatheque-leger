@@ -18,8 +18,8 @@
             </div>
             <div class="col-12">
                 <label class="form-label">Équipements</label>
-                <input type="text" name="equipements" class="form-control"
-                       value="<?= e($salle['equipements'] ?? '') ?>"
+                <input type="text" name="equipement" class="form-control"
+                       value="<?= e($salle['equipement'] ?? '') ?>"
                        placeholder="Wi-Fi, vidéoprojecteur, tableau blanc…">
             </div>
             <div class="col-12">

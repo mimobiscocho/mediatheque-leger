@@ -65,10 +65,18 @@ mediatheque-leger/
 
 ---
 
-## 3. Base de données
+## 3. Base de données — schéma unifié
 
-Schéma relationnel (8 tables) :
-`agent`, `abonnement`, `adherent`, `livre`, `materiel`, `salle`, `pret`, `reservation`.
+L'application partage **une seule base** `mediatheque` avec le client lourd
+(application desktop Java). Le schéma est strictement identique dans les
+deux dépôts :
+
+- Tables exploitées par cette application (client léger) : `agent`,
+  `abonnement`, `adherent`, `livre`, `materiel`, `pret`.
+- Tables **partagées** avec le client lourd : `adherent`, `salle`,
+  `reservation`.
+- Tables ignorées par cette application (mais présentes dans la base
+  unifiée pour le lourd) : `profil`, `technicien`, `animation`, `facture`.
 
 ### Triggers (automatisation des disponibilités — exigence du cahier des charges)
 
@@ -78,7 +86,8 @@ Schéma relationnel (8 tables) :
 | `trg_pret_after_insert` | Décrémente le stock du produit emprunté |
 | `trg_pret_after_update` | Restaure le stock au retour du produit |
 | `trg_pret_after_delete` | Restaure le stock si un prêt en cours est supprimé |
-| `trg_reservation_before_insert` | **Bloque** le chevauchement de créneaux sur une même salle |
+| `trg_reservation_before_insert` | **Bloque** une salle indisponible ou le chevauchement de créneaux |
+| `trg_reservation_before_update` | Même contrôle lors d'une modification |
 
 Les triggers lèvent une erreur SQL (`SIGNAL`) remontée à l'utilisateur sous
 forme de message d'alerte.

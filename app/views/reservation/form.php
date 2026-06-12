@@ -1,4 +1,8 @@
-<?php $today = date('Y-m-d'); ?>
+<?php
+// Formulaire de réservation de salle.
+// $today sert de date par défaut ET de date minimale (pas de résa passée).
+$today = date('Y-m-d');
+?>
 
 <h1 class="h3 mb-4 page-title"><i class="bi bi-calendar-check"></i> <?= e($titre) ?></h1>
 

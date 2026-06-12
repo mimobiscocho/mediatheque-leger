@@ -6,6 +6,10 @@ node_modules/
 *.log
 .cache/
 
+# Artefacts d'exécution locale (start.sh)
+.pid
+.env
+
 # Fichiers système / éditeurs
 .DS_Store
 Thumbs.db

@@ -5,7 +5,11 @@
     </a>
 </div>
 
-<!-- Filtres multicritères (soumis en GET au contrôleur Livre) -->
+<?php
+// Formulaire de filtre multicritères : il est envoyé en GET (les critères
+// apparaissent dans l'URL, donc une recherche peut être mise en favori).
+// Les champs cachés ctrl/action permettent au routeur de revenir ici.
+?>
 <form method="get" action="<?= BASE_URL ?>" class="card card-body shadow-sm mb-3">
     <input type="hidden" name="ctrl" value="livre">
     <input type="hidden" name="action" value="index">
@@ -13,7 +17,7 @@
         <div class="col-md-5">
             <label class="form-label mb-1 small fw-semibold">Recherche</label>
             <input type="search" name="q" class="form-control" value="<?= e($filtres['q']) ?>"
-                   placeholder="🔎 Titre, auteur ou ISBN…">
+                   placeholder="Titre, auteur ou ISBN...">
         </div>
         <div class="col-md-3">
             <label class="form-label mb-1 small fw-semibold">Genre</label>

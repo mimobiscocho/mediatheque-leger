@@ -1,4 +1,6 @@
 <?php
+// Liste des réservations de salles.
+// Correspondance statut en base -> couleur de badge et libellé affiché.
 $statutCls = ['CONFIRMEE' => 'text-bg-success', 'ANNULEE' => 'text-bg-secondary', 'TERMINEE' => 'text-bg-dark'];
 $statutLbl = ['CONFIRMEE' => 'Confirmée', 'ANNULEE' => 'Annulée', 'TERMINEE' => 'Terminée'];
 ?>
@@ -9,8 +11,9 @@ $statutLbl = ['CONFIRMEE' => 'Confirmée', 'ANNULEE' => 'Annulée', 'TERMINEE' =
     </a>
 </div>
 
+<?php // Recherche instantanée côté navigateur (voir app.js) ?>
 <input type="search" class="form-control mb-3" data-filter="#tbl-resa"
-       placeholder="🔎 Rechercher (adhérent, salle…)">
+       placeholder="Rechercher (adhérent, salle...)">
 
 <div class="card shadow-sm">
     <div class="table-responsive">

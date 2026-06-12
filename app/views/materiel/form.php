@@ -1,5 +1,7 @@
 <?php
+// Formulaire de matériel : création si $materiel est null, modification sinon.
 $action = $materiel ? url('materiel', 'save', ['id' => $materiel['id']]) : url('materiel', 'save');
+// Liste des états possibles (valeur en base => libellé affiché)
 $etats  = ['neuf' => 'Neuf', 'bon' => 'Bon', 'use' => 'Usé', 'hors_service' => 'Hors service'];
 ?>
 <h1 class="h3 mb-4 page-title"><i class="bi bi-tools"></i> <?= e($titre) ?></h1>

@@ -1,4 +1,7 @@
-<?php $action = $livre ? url('livre', 'save', ['id' => $livre['id']]) : url('livre', 'save'); ?>
+<?php
+// Formulaire de livre : création si $livre est null, modification sinon.
+$action = $livre ? url('livre', 'save', ['id' => $livre['id']]) : url('livre', 'save');
+?>
 
 <h1 class="h3 mb-4 page-title"><i class="bi bi-book"></i> <?= e($titre) ?></h1>
 

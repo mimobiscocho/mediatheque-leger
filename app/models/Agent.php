@@ -13,6 +13,20 @@ class Agent extends Model
     }
 
     /**
+     * Met à jour le mot de passe d'un agent.
+     * Le mot de passe est haché avec password_hash (bcrypt) :
+     * on ne stocke jamais le mot de passe en clair en base.
+     */
+    public function updatePassword(int $id, string $nouveau): bool
+    {
+        $stmt = $this->db->prepare("UPDATE agent SET mot_de_passe = :mdp WHERE id = :id");
+        return $stmt->execute([
+            'mdp' => password_hash($nouveau, PASSWORD_DEFAULT),
+            'id'  => $id,
+        ]);
+    }
+
+    /**
      * Crée un agent en hachant le mot de passe (bcrypt via password_hash).
      * Le mot de passe en clair n'est jamais stocké.
      */

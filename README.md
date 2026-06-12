@@ -164,7 +164,7 @@ Copier le dossier dans `htdocs/`, puis ouvrir
    ci-dessus). Le menu en haut à droite permet de se déconnecter.
 1. **Tableau de bord** : vue d'ensemble (compteurs, prêts en cours, retards).
 2. **Adhérents / Livres / Matériels / Salles** : bouton « Nouveau… » pour créer,
-   icônes ✏️ / 🗑️ pour modifier / supprimer. Les **livres** et **matériels**
+   boutons crayon / corbeille pour modifier / supprimer. Les **livres** et **matériels**
    disposent en plus d'un **filtre multicritères** (recherche, genre/catégorie,
    état, disponibilité).
 3. **Prêts** : « Nouveau prêt » → choisir un adhérent et un produit. Le bouton

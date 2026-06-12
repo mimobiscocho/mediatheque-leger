@@ -1,4 +1,9 @@
-<?php $action = $adherent ? url('adherent', 'save', ['id' => $adherent['id']]) : url('adherent', 'save'); ?>
+<?php
+// Formulaire d'adhérent : sert à la fois pour la CRÉATION ($adherent vaut
+// null) et la MODIFICATION ($adherent contient la ligne lue en base).
+// En modification, on ajoute l'id dans l'URL de soumission.
+$action = $adherent ? url('adherent', 'save', ['id' => $adherent['id']]) : url('adherent', 'save');
+?>
 
 <h1 class="h3 mb-4 page-title"><i class="bi bi-person-plus"></i> <?= e($titre) ?></h1>
 

@@ -1,4 +1,7 @@
-<?php $action = $salle ? url('salle', 'save', ['id' => $salle['id']]) : url('salle', 'save'); ?>
+<?php
+// Formulaire de salle : création si $salle est null, modification sinon.
+$action = $salle ? url('salle', 'save', ['id' => $salle['id']]) : url('salle', 'save');
+?>
 
 <h1 class="h3 mb-4 page-title"><i class="bi bi-door-open"></i> <?= e($titre) ?></h1>
 

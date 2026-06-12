@@ -5,8 +5,9 @@
     </a>
 </div>
 
+<?php // Recherche instantanée côté navigateur (voir app.js) ?>
 <input type="search" class="form-control mb-3" data-filter="#tbl-prets"
-       placeholder="🔎 Rechercher (adhérent, produit…)">
+       placeholder="Rechercher (adhérent, produit...)">
 
 <div class="card shadow-sm">
     <div class="table-responsive">
@@ -22,6 +23,8 @@
                 <?php if (empty($prets)): ?>
                     <tr><td colspan="7" class="text-center text-muted py-4">Aucun prêt enregistré.</td></tr>
                 <?php else: foreach ($prets as $p):
+                    // Un prêt est "rendu" s'il a une date de retour effective,
+                    // et "en retard" si la date prévue est dépassée sans retour.
                     $rendu     = !empty($p['date_retour_effective']);
                     $enRetard  = !$rendu && $p['date_retour_prevue'] < date('Y-m-d');
                 ?>

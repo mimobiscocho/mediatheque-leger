@@ -1,7 +1,12 @@
 <?php
-/** Réservation des espaces (salles de coworking). */
+/**
+ * Réservation des espaces (salles de coworking) : un adhérent réserve
+ * une salle sur un créneau horaire. Les conflits de créneau sont
+ * bloqués par un trigger MySQL.
+ */
 class ReservationController extends Controller
 {
+    /** Liste de toutes les réservations. */
     public function index($id = null): void
     {
         $this->view('reservation/index', [
@@ -10,6 +15,7 @@ class ReservationController extends Controller
         ]);
     }
 
+    /** Formulaire de nouvelle réservation. */
     public function form($id = null): void
     {
         $this->view('reservation/form', [
@@ -19,8 +25,10 @@ class ReservationController extends Controller
         ]);
     }
 
+    /** Enregistre une nouvelle réservation. */
     public function save($id = null): void
     {
+        // Adhérent et salle sont obligatoires
         $adherentId = (int) ($_POST['adherent_id'] ?? 0);
         $salleId    = (int) ($_POST['salle_id']    ?? 0);
         if (!$adherentId || !$salleId) {
@@ -36,6 +44,8 @@ class ReservationController extends Controller
             'heure_fin'        => ($_POST['heure_fin']        ?? '') ?: '10:00',
         ];
 
+        // Cohérence du créneau : la comparaison de chaînes "HH:MM"
+        // fonctionne car le format trie naturellement les heures.
         if ($data['heure_fin'] <= $data['heure_debut']) {
             $this->flash('L\'heure de fin doit être postérieure à l\'heure de début.', 'danger');
             $this->redirect('reservation', 'form');
@@ -50,7 +60,8 @@ class ReservationController extends Controller
             $this->flash('Réservation confirmée.');
         } catch (PDOException $e) {
             error_log('[Mediatheque] Reservation save: ' . $e->getMessage());
-            // Les triggers métier (SQLSTATE 45000) renvoient un message lisible.
+            // Si le refus vient d'un trigger métier (code SQL 45000,
+            // ex : créneau déjà pris), son message est affichable tel quel.
             $msg = $e->getCode() === '45000' ? $e->getMessage() : 'La réservation n\'a pas pu être enregistrée.';
             $this->flash('Réservation refusée : ' . $msg, 'danger');
         }
@@ -67,6 +78,7 @@ class ReservationController extends Controller
         $this->redirect('reservation');
     }
 
+    /** Supprime définitivement une réservation de l'historique. */
     public function delete($id = null): void
     {
         if ($id) {

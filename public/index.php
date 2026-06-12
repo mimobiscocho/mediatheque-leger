@@ -7,11 +7,14 @@
 
 define('ROOT', dirname(__DIR__));
 
-require ROOT . '/config/config.php';
-require ROOT . '/config/Database.php';
-require ROOT . '/app/core/helpers.php';
-require ROOT . '/app/core/Model.php';
-require ROOT . '/app/core/Controller.php';
+// Chargement des fichiers de base (config + "framework" maison)
+require ROOT . '/config/config.php';      // constantes (nom appli, BDD...)
+require ROOT . '/config/Database.php';    // connexion PDO
+require ROOT . '/app/core/helpers.php';   // petites fonctions (url, e, csrf...)
+require ROOT . '/app/core/Model.php';     // classe mère des modèles
+require ROOT . '/app/core/Controller.php';// classe mère des contrôleurs
+require ROOT . '/app/core/Security.php';  // rôles + validations
+require ROOT . '/app/core/Logger.php';    // journal des événements (logs/)
 
 // --- Paramètres du cookie de session (sécurité) ---
 // HttpOnly  : le cookie n'est pas lisible en JavaScript (anti-vol XSS).

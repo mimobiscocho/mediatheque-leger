@@ -1,3 +1,7 @@
+<?php
+// Liste des salles, présentées en cartes (et non en tableau,
+// pour mettre en avant la capacité et les équipements).
+?>
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <h1 class="h3 page-title mb-0"><i class="bi bi-door-open"></i> Gestion des salles de coworking</h1>
     <a href="<?= url('salle', 'form') ?>" class="btn btn-mediatheque">

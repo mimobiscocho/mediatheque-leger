@@ -1,4 +1,9 @@
-<?php $today = date('Y-m-d'); $plus14 = date('Y-m-d', strtotime('+14 days')); ?>
+<?php
+// Formulaire de nouveau prêt.
+// Valeurs proposées par défaut : prêt aujourd'hui, retour dans 14 jours.
+$today  = date('Y-m-d');
+$plus14 = date('Y-m-d', strtotime('+14 days'));
+?>
 
 <h1 class="h3 mb-4 page-title"><i class="bi bi-arrow-left-right"></i> <?= e($titre) ?></h1>
 
@@ -24,8 +29,10 @@
                 <label class="form-label">Produit à emprunter <span class="text-danger">*</span></label>
                 <select name="produit" class="form-select" required>
                     <option value="">— Choisir un produit —</option>
+                    <?php // La valeur envoyée encode le type ET l'id : "livre:3" ou "materiel:5",
+                          // le contrôleur la découpe pour savoir quelle table mettre à jour. ?>
                     <?php if (!empty($livres)): ?>
-                        <optgroup label="📚 Livres">
+                        <optgroup label="Livres">
                             <?php foreach ($livres as $l): ?>
                                 <option value="livre:<?= $l['id'] ?>">
                                     <?= e($l['titre']) ?> — <?= e($l['auteur']) ?>
@@ -35,7 +42,7 @@
                         </optgroup>
                     <?php endif; ?>
                     <?php if (!empty($materiels)): ?>
-                        <optgroup label="🔧 Matériels">
+                        <optgroup label="Matériels">
                             <?php foreach ($materiels as $m): ?>
                                 <option value="materiel:<?= $m['id'] ?>"><?= e($m['nom']) ?></option>
                             <?php endforeach; ?>

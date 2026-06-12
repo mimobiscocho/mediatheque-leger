@@ -1,3 +1,7 @@
+<?php
+// Liste des adhérents. $adherents est fourni par AdherentController::index
+// (avec le libellé de l'abonnement déjà joint en SQL).
+?>
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <h1 class="h3 page-title mb-0"><i class="bi bi-people"></i> Gestion des adhérents</h1>
     <a href="<?= url('adherent', 'form') ?>" class="btn btn-mediatheque">
@@ -5,8 +9,10 @@
     </a>
 </div>
 
+<?php // Champ de recherche instantanée : filtré en JavaScript (voir app.js),
+      // l'attribut data-filter pointe vers le tableau à filtrer. ?>
 <input type="search" class="form-control mb-3" data-filter="#tbl-adherents"
-       placeholder="🔎 Rechercher un adhérent (nom, email…)">
+       placeholder="Rechercher un adhérent (nom, email...)">
 
 <div class="card shadow-sm">
     <div class="table-responsive">
@@ -36,6 +42,7 @@
                             <?php endif; ?>
                         </td>
                         <td class="text-end text-nowrap">
+                            <?php // Modifier = simple lien ; Supprimer = formulaire POST + CSRF ?>
                             <a href="<?= url('adherent', 'form', ['id' => $a['id']]) ?>"
                                class="btn btn-sm btn-outline-primary" title="Modifier"><i class="bi bi-pencil"></i></a>
                             <?= postButton('adherent', 'delete', (int) $a['id'], '<i class="bi bi-trash"></i>', [

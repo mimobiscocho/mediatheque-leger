@@ -45,6 +45,12 @@ function csrf_field(): string
     return '<input type="hidden" name="_csrf" value="' . e(csrf_token()) . '">';
 }
 
+/** Indique si l'agent connecté a le rôle administrateur. */
+function isAdmin(): bool
+{
+    return ($_SESSION['agent']['role'] ?? '') === 'admin';
+}
+
 /**
  * Vérifie le jeton CSRF d'une soumission POST.
  * Termine la requête (HTTP 419) si invalide.

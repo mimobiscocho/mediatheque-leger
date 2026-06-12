@@ -1,4 +1,7 @@
 <?php
+// Liste des matériels avec filtre multicritères.
+// Deux tableaux de correspondance : la valeur stockée en base ('neuf',
+// 'bon'...) vers son libellé affiché et la couleur du badge Bootstrap.
 $etatLabels = ['neuf' => 'Neuf', 'bon' => 'Bon', 'use' => 'Usé', 'hors_service' => 'Hors service'];
 $etatCls    = ['neuf' => 'text-bg-success', 'bon' => 'text-bg-primary', 'use' => 'text-bg-warning', 'hors_service' => 'text-bg-secondary'];
 ?>
@@ -9,7 +12,7 @@ $etatCls    = ['neuf' => 'text-bg-success', 'bon' => 'text-bg-primary', 'use' =>
     </a>
 </div>
 
-<!-- Filtres multicritères (soumis en GET au contrôleur Materiel) -->
+<?php // Formulaire de filtre multicritères, envoyé en GET (comme pour les livres) ?>
 <form method="get" action="<?= BASE_URL ?>" class="card card-body shadow-sm mb-3">
     <input type="hidden" name="ctrl" value="materiel">
     <input type="hidden" name="action" value="index">
@@ -17,7 +20,7 @@ $etatCls    = ['neuf' => 'text-bg-success', 'bon' => 'text-bg-primary', 'use' =>
         <div class="col-md-4">
             <label class="form-label mb-1 small fw-semibold">Recherche</label>
             <input type="search" name="q" class="form-control" value="<?= e($filtres['q']) ?>"
-                   placeholder="🔎 Nom ou description…">
+                   placeholder="Nom ou description...">
         </div>
         <div class="col-md-3">
             <label class="form-label mb-1 small fw-semibold">Catégorie</label>

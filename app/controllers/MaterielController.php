@@ -1,10 +1,16 @@
 <?php
-/** CRUD des matériels. */
+/**
+ * Gestion des matériels empruntables (ordinateurs, liseuses, casques...) :
+ * liste avec filtre multicritères, création, modification, suppression.
+ */
 class MaterielController extends Controller
 {
+    /** Liste des matériels, éventuellement filtrée. */
     public function index($id = null): void
     {
-        $model   = $this->model('Materiel');
+        $model = $this->model('Materiel');
+
+        // Critères de recherche lus dans l'URL (formulaire envoyé en GET)
         $filtres = [
             'q'         => trim($_GET['q'] ?? ''),
             'categorie' => trim($_GET['categorie'] ?? ''),
@@ -20,6 +26,7 @@ class MaterielController extends Controller
         ]);
     }
 
+    /** Formulaire : création (sans id) ou modification (avec id). */
     public function form($id = null): void
     {
         $model = $this->model('Materiel');
@@ -29,8 +36,11 @@ class MaterielController extends Controller
         ]);
     }
 
+    /** Enregistre le formulaire (création ou mise à jour selon l'id). */
     public function save($id = null): void
     {
+        // L'état doit faire partie de la liste autorisée (celle du ENUM
+        // en base). Toute valeur inattendue retombe sur 'bon'.
         $etats = ['neuf', 'bon', 'use', 'hors_service'];
         $etat  = in_array($_POST['etat'] ?? '', $etats, true) ? $_POST['etat'] : 'bon';
 
@@ -58,6 +68,7 @@ class MaterielController extends Controller
         $this->redirect('materiel');
     }
 
+    /** Supprime un matériel. */
     public function delete($id = null): void
     {
         if ($id) {

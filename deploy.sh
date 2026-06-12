@@ -331,11 +331,21 @@ setup_vhost() {
     </Directory>
 
     # --- Refus explicite des dossiers internes -------------------------
-    <Directory $INSTALL_DIR/app>     Require all denied </Directory>
-    <Directory $INSTALL_DIR/config>  Require all denied </Directory>
-    <Directory $INSTALL_DIR/logs>    Require all denied </Directory>
-    <Directory $INSTALL_DIR/sql>     Require all denied </Directory>
-    <Directory $INSTALL_DIR/docs>    Require all denied </Directory>
+    <Directory $INSTALL_DIR/app>
+        Require all denied
+    </Directory>
+    <Directory $INSTALL_DIR/config>
+        Require all denied
+    </Directory>
+    <Directory $INSTALL_DIR/logs>
+        Require all denied
+    </Directory>
+    <Directory $INSTALL_DIR/sql>
+        Require all denied
+    </Directory>
+    <Directory $INSTALL_DIR/docs>
+        Require all denied
+    </Directory>
 
     # Refus des fichiers cachés (.git, .env...) où qu'ils soient.
     <FilesMatch "^\.">

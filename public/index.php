@@ -40,10 +40,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
 }
 
-// --- Contrôle d'accès : toute page exige un agent connecté,
-//     sauf le contrôleur d'authentification (écran de connexion).
-if ($ctrl !== 'auth' && empty($_SESSION['agent'])) {
-    header('Location: ' . url('auth', 'login'));
+// --- Contrôle d'accès :
+//     - les contrôleurs "auth" (agents) et "client" (espace adhérent) sont
+//       publics : ils gèrent eux-mêmes leur propre session.
+//     - tout le reste exige un agent connecté. Un client déjà connecté est
+//       renvoyé vers son propre tableau de bord plutôt que vers le login agent.
+$ctrlsPublics = ['auth', 'client'];
+if (!in_array($ctrl, $ctrlsPublics, true) && empty($_SESSION['agent'])) {
+    if (!empty($_SESSION['client'])) {
+        header('Location: ' . url('client', 'dashboard'));
+    } else {
+        header('Location: ' . url('auth', 'login'));
+    }
     exit;
 }
 

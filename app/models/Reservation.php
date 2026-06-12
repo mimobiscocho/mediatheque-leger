@@ -46,4 +46,31 @@ class Reservation extends Model
         $sql = "UPDATE reservation SET statut = 'ANNULEE' WHERE id = :id";
         return $this->db->prepare($sql)->execute(['id' => $id]);
     }
+
+    /** Toutes les réservations d'un adhérent (espace client), avec la salle. */
+    public function byAdherent(int $adherentId): array
+    {
+        $sql = "SELECT r.*, s.nom AS salle_nom
+                FROM reservation r
+                JOIN salle s ON r.salle_id = s.id
+                WHERE r.adherent_id = :id
+                ORDER BY r.date_reservation DESC, r.heure_debut";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['id' => $adherentId]);
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Annule une réservation seulement si elle appartient bien à l'adhérent.
+     * Retourne true si la mise à jour a touché une ligne (autorisée).
+     */
+    public function annulerForAdherent(int $id, int $adherentId): bool
+    {
+        $sql = "UPDATE reservation
+                   SET statut = 'ANNULEE'
+                 WHERE id = :id AND adherent_id = :adh AND statut = 'CONFIRMEE'";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['id' => $id, 'adh' => $adherentId]);
+        return $stmt->rowCount() > 0;
+    }
 }

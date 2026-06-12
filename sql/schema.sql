@@ -72,6 +72,8 @@ CREATE TABLE adherent (
     email               VARCHAR(120) UNIQUE,
     telephone           VARCHAR(20),
     adresse             VARCHAR(200),
+    -- Compte client (espace personnel web). NULL = pas de compte ouvert.
+    mot_de_passe        VARCHAR(255) DEFAULT NULL,    -- empreinte bcrypt
     -- Abonnement détaillé (FK) : exploité par le client léger
     abonnement_id       INT,
     -- Type d'abonnement simplifié : exploité par le client lourd
@@ -390,14 +392,16 @@ INSERT INTO abonnement (libelle, tarif, duree_mois, quota_emprunts) VALUES
 --  Adhérents : table commune. abonnement_id et type_abonnement
 --  sont renseignés en parallèle pour faciliter l'usage des deux apps.
 -- ---------------------------------------------------------------------
-INSERT INTO adherent (nom, prenom, email, telephone, adresse, abonnement_id, type_abonnement, date_inscription, date_fin_abonnement, actif) VALUES
-('Martin',  'Sophie',  'sophie.martin@email.fr',  '0612345678', '12 rue des Lilas, Bourg-la-Reine',         1, 'STANDARD', '2026-01-10', '2027-01-10', 1),
-('Dubois',  'Karim',   'karim.dubois@email.fr',   '0623456789', '5 av. du Général Leclerc, Bourg-la-Reine', 2, 'ETUDIANT', '2026-01-15', '2027-01-15', 1),
-('Nguyen',  'Camille', 'camille.nguyen@email.fr', '0634567890', '28 rue de la Bièvre, Bourg-la-Reine',      3, 'PREMIUM',  '2026-02-01', '2027-02-01', 1),
-('Lefevre', 'Hugo',    'hugo.lefevre@email.fr',   '0645678901', '3 place de la Mairie, Bourg-la-Reine',     4, 'STANDARD', '2026-02-20', '2026-05-20', 1),
-('Dupont',  'Jean',    'jean.dupont@mail.fr',     '0601020304', '12 rue de la Paix, Bourg-la-Reine',        1, 'STANDARD', '2025-01-15', '2026-01-15', 1),
-('Bernard', 'Sophie',  'sophie.bernard@mail.fr',  '0611223344', '5 av. du Parc, Bourg-la-Reine',            3, 'PREMIUM',  '2024-09-03', '2025-09-03', 1),
-('Moreau',  'Emma',    'emma.moreau@mail.fr',     '0699887766', '3 place de la Mairie, Bourg-la-Reine',     1, 'STANDARD', '2025-03-12', '2026-03-12', 1);
+-- L'adhérent Sophie Martin dispose d'un compte client de démonstration
+--   identifiants : sophie.martin@email.fr / client123
+INSERT INTO adherent (nom, prenom, email, telephone, adresse, mot_de_passe, abonnement_id, type_abonnement, date_inscription, date_fin_abonnement, actif) VALUES
+('Martin',  'Sophie',  'sophie.martin@email.fr',  '0612345678', '12 rue des Lilas, Bourg-la-Reine',         '$2y$12$tGyLa7ybnAWra4Zga4/5Zuubm.AQV6ZeXQu6xYHw.Ig0xKWiuyy0C', 1, 'STANDARD', '2026-01-10', '2027-01-10', 1),
+('Dubois',  'Karim',   'karim.dubois@email.fr',   '0623456789', '5 av. du Général Leclerc, Bourg-la-Reine', NULL, 2, 'ETUDIANT', '2026-01-15', '2027-01-15', 1),
+('Nguyen',  'Camille', 'camille.nguyen@email.fr', '0634567890', '28 rue de la Bièvre, Bourg-la-Reine',      NULL, 3, 'PREMIUM',  '2026-02-01', '2027-02-01', 1),
+('Lefevre', 'Hugo',    'hugo.lefevre@email.fr',   '0645678901', '3 place de la Mairie, Bourg-la-Reine',     NULL, 4, 'STANDARD', '2026-02-20', '2026-05-20', 1),
+('Dupont',  'Jean',    'jean.dupont@mail.fr',     '0601020304', '12 rue de la Paix, Bourg-la-Reine',        NULL, 1, 'STANDARD', '2025-01-15', '2026-01-15', 1),
+('Bernard', 'Sophie',  'sophie.bernard@mail.fr',  '0611223344', '5 av. du Parc, Bourg-la-Reine',            NULL, 3, 'PREMIUM',  '2024-09-03', '2025-09-03', 1),
+('Moreau',  'Emma',    'emma.moreau@mail.fr',     '0699887766', '3 place de la Mairie, Bourg-la-Reine',     NULL, 1, 'STANDARD', '2025-03-12', '2026-03-12', 1);
 
 -- ---------------------------------------------------------------------
 --  Collection (livres + matériels)
